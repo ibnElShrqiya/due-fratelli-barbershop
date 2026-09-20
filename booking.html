@@ -1,153 +1,775 @@
 <!DOCTYPE html>
 <html lang="it" dir="ltr" class="scroll-smooth">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Prenota un Appuntamento | DUE FRATELLI Perugia</title>
+
+    <meta
+        name="description"
+        content="Prenota il tuo appuntamento presso DUE FRATELLI Barbershop a Perugia.">
+
     <script src="https://cdn.tailwindcss.com"></script>
+
     <script src="https://unpkg.com/lucide@latest"></script>
+
 </head>
+
+
 <body class="bg-neutral-950 text-neutral-100 font-sans">
 
-    <!-- Header -->
+
+    <!-- HEADER -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-amber-500/20">
+
         <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-            <a href="index.html" class="flex items-center space-x-2">
-                <i data-lucide="scissors" class="w-7 h-7 text-amber-500"></i>
-                <span class="text-xl font-black text-amber-400">DUE FRATELLI</span>
+
+            <a
+                href="index.html"
+                class="flex items-center space-x-2">
+
+                <i
+                    data-lucide="scissors"
+                    class="w-7 h-7 text-amber-500">
+                </i>
+
+                <span class="text-xl font-black text-amber-400">
+                    DUE FRATELLI
+                </span>
+
             </a>
-            
+
+
             <div class="flex items-center space-x-3">
-                <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-neutral-900 border border-amber-500/30 text-amber-400 text-xs font-bold rounded-lg px-2 py-1.5 focus:outline-none">
-                    <option value="it">🇮🇹 IT</option>
-                    <option value="en">🇬🇧 EN</option>
-                    <option value="ar">🇪🇬 AR</option>
+
+                <!-- LANGUAGE -->
+                <select
+                    id="lang-select"
+                    onchange="changeLanguage(this.value)"
+                    class="bg-neutral-900 border border-amber-500/30 text-amber-400 text-xs font-bold rounded-lg px-2 py-1.5 focus:outline-none">
+
+                    <option value="it">
+                        🇮🇹 IT
+                    </option>
+
+                    <option value="en">
+                        🇬🇧 EN
+                    </option>
+
+                    <option value="ar">
+                        🇪🇬 AR
+                    </option>
+
                 </select>
-                <a href="pricing.html" class="text-xs text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-full" data-i18n="nav_services">Servizi e Prezzi</a>
+
+
+                <!-- PRICES -->
+                <a
+                    href="pricing.html"
+                    class="text-xs text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-full"
+                    data-i18n="nav_services">
+
+                    Servizi e Prezzi
+
+                </a>
+
             </div>
+
         </div>
+
     </header>
 
+
+    <!-- MAIN -->
     <main class="pt-32 pb-24 max-w-3xl mx-auto px-4">
+
         <div class="text-center mb-10">
-            <h1 class="text-3xl sm:text-5xl font-black text-amber-400" data-i18n="booking_title">Prenota il tuo Appuntamento</h1>
-            <p class="text-gray-400 mt-2">Via M. Angeloni, 36, Perugia - <span data-i18n="booking_hours">Orario: 09:00 - 21:00</span></p>
+
+            <h1
+                class="text-3xl sm:text-5xl font-black text-amber-400"
+                data-i18n="booking_title">
+
+                Prenota il tuo Appuntamento
+
+            </h1>
+
+
+            <p class="text-gray-400 mt-2">
+
+                Via M. Angeloni, 36, Perugia -
+
+                <span data-i18n="booking_hours">
+                    Orario: 09:00 - 21:00
+                </span>
+
+            </p>
+
         </div>
 
-        <form onsubmit="sendWhatsAppBooking(event)" class="bg-neutral-900 border border-amber-500/20 p-8 rounded-3xl space-y-6 shadow-2xl">
-            
+
+        <!-- BOOKING FORM -->
+        <form
+            onsubmit="sendWhatsAppBooking(event)"
+            class="bg-neutral-900 border border-amber-500/20 p-8 rounded-3xl space-y-6 shadow-2xl">
+
+
+            <!-- NAME -->
             <div>
-                <label class="block text-sm font-medium text-amber-300 mb-2" data-i18n="lbl_name">Nome e Cognome</label>
-                <input type="text" id="name" required placeholder="Es. Marco Rossi" class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
+
+                <label
+                    class="block text-sm font-medium text-amber-300 mb-2"
+                    data-i18n="lbl_name">
+
+                    Nome e Cognome
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="name"
+                    required
+                    autocomplete="name"
+                    placeholder="Es. Marco Rossi"
+                    class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
+
             </div>
 
+
+            <!-- PHONE -->
             <div>
-                <label class="block text-sm font-medium text-amber-300 mb-2" data-i18n="lbl_phone">Telefono</label>
-                <input type="tel" id="phone" required placeholder="+39 000 000 0000" class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
+
+                <label
+                    class="block text-sm font-medium text-amber-300 mb-2"
+                    data-i18n="lbl_phone">
+
+                    Telefono
+
+                </label>
+
+
+                <input
+                    type="tel"
+                    id="phone"
+                    required
+                    autocomplete="tel"
+                    placeholder="+39 000 000 0000"
+                    class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
+
             </div>
 
+
+            <!-- SERVICE -->
             <div>
-                <label class="block text-sm font-medium text-amber-300 mb-2" data-i18n="lbl_service">Scegli il Servizio</label>
-                <select id="service" class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
-                    <option value="Servizio Completo (€25)">Servizio Completo / Full Service - €25</option>
-                    <option value="Taglio Capelli (€10)">Taglio Capelli / Haircut - €10</option>
-                    <option value="Regolazione Barba (€5)">Regolazione Barba / Beard Trim - €5</option>
-                    <option value="Maschera Viso (€5)">Maschera Viso / Face Mask - €5</option>
-                    <option value="Vapore Viso (€5)">Vapore Viso / Facial Steam - €5</option>
-                    <option value="Sopracciglia Filo (€5)">Sopracciglia con Filo (Donna) - €5</option>
-                    <option value="Viso Completo Filo (€10)">Viso Completo con Filo (Donna) - €10</option>
+
+                <label
+                    class="block text-sm font-medium text-amber-300 mb-2"
+                    data-i18n="lbl_service">
+
+                    Scegli il Servizio
+
+                </label>
+
+
+                <select
+                    id="service"
+                    required
+                    class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
+
                 </select>
+
             </div>
 
+
+            <!-- DATE + TIME -->
             <div class="grid grid-cols-2 gap-4">
+
+
+                <!-- DATE -->
                 <div>
-                    <label class="block text-sm font-medium text-amber-300 mb-2" data-i18n="lbl_date">Data</label>
-                    <input type="date" id="date" required class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
+
+                    <label
+                        class="block text-sm font-medium text-amber-300 mb-2"
+                        data-i18n="lbl_date">
+
+                        Data
+
+                    </label>
+
+
+                    <input
+                        type="date"
+                        id="date"
+                        required
+                        class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
+
                 </div>
+
+
+                <!-- TIME -->
                 <div>
-                    <label class="block text-sm font-medium text-amber-300 mb-2" data-i18n="lbl_time">Ora</label>
-                    <input type="time" id="time" required class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
+
+                    <label
+                        class="block text-sm font-medium text-amber-300 mb-2"
+                        data-i18n="lbl_time">
+
+                        Ora
+
+                    </label>
+
+
+                    <input
+                        type="time"
+                        id="time"
+                        min="09:00"
+                        max="21:00"
+                        required
+                        class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
+
                 </div>
+
             </div>
 
-            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-lg">
-                <i data-lucide="message-square" class="w-6 h-6"></i>
-                <span data-i18n="btn_send_whatsapp">Invia Prenotazione via WhatsApp</span>
+
+            <!-- INFO -->
+            <div
+                class="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4 text-sm text-gray-400">
+
+                <div class="flex gap-3">
+
+                    <i
+                        data-lucide="clock"
+                        class="w-5 h-5 text-amber-400 flex-shrink-0">
+                    </i>
+
+                    <span data-i18n="booking_note">
+
+                        Orario disponibile: tutti i giorni dalle 09:00 alle 21:00.
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- WHATSAPP BUTTON -->
+            <button
+                type="submit"
+                class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-lg">
+
+                <i
+                    data-lucide="message-square"
+                    class="w-6 h-6">
+                </i>
+
+                <span data-i18n="btn_send_whatsapp">
+
+                    Invia Prenotazione via WhatsApp
+
+                </span>
+
             </button>
+
+
         </form>
+
     </main>
 
+
     <script>
+
         lucide.createIcons();
 
-        const translations = {
-            it: {
-                nav_services: "Servizi e Prezzi",
-                booking_title: "Prenota il tuo Appuntamento",
-                booking_hours: "Orario: 09:00 - 21:00",
-                lbl_name: "Nome e Cognome",
-                lbl_phone: "Telefono",
-                lbl_service: "Scegli il Servizio",
-                lbl_date: "Data",
-                lbl_time: "Ora",
-                btn_send_whatsapp: "Invia Prenotazione via WhatsApp"
-            },
-            en: {
-                nav_services: "Services & Prices",
-                booking_title: "Book Your Appointment",
-                booking_hours: "Hours: 09:00 AM - 09:00 PM",
-                lbl_name: "Full Name",
-                lbl_phone: "Phone Number",
-                lbl_service: "Select Service",
-                lbl_date: "Date",
-                lbl_time: "Time",
-                btn_send_whatsapp: "Send Booking via WhatsApp"
-            },
-            ar: {
-                nav_services: "الخدمات والأسعار",
-                booking_title: "احجز موعدك الآن",
-                booking_hours: "ساعات العمل: 9:00 AM - 9:00 PM",
-                lbl_name: "الاسم الكامل",
-                lbl_phone: "رقم الهاتف",
-                lbl_service: "اختر الخدمة",
-                lbl_date: "التاريخ",
-                lbl_time: "الوقت",
-                btn_send_whatsapp: "إرسال طلب الحجز عبر WhatsApp"
-            }
+
+        /* ================================
+           SERVICES
+        ================================= */
+
+        const serviceOptions = {
+
+            it: [
+
+                [
+                    "Servizio Completo (€25)",
+                    "Servizio Completo / Full Service - €25"
+                ],
+
+                [
+                    "Taglio Capelli (€10)",
+                    "Taglio Capelli / Haircut - €10"
+                ],
+
+                [
+                    "Regolazione Barba (€5)",
+                    "Regolazione Barba / Beard Trim - €5"
+                ],
+
+                [
+                    "Maschera Viso (€5)",
+                    "Maschera Viso / Face Mask - €5"
+                ],
+
+                [
+                    "Vapore Viso (€5)",
+                    "Vapore Viso / Facial Steam - €5"
+                ],
+
+                [
+                    "Sopracciglia Filo (€5)",
+                    "Sopracciglia con Filo (Donna) - €5"
+                ],
+
+                [
+                    "Viso Completo Filo (€10)",
+                    "Viso Completo con Filo (Donna) - €10"
+                ]
+
+            ],
+
+
+            en: [
+
+                [
+                    "Full Service (€25)",
+                    "Full Service / Haircut + Beard + Facial - €25"
+                ],
+
+                [
+                    "Haircut (€10)",
+                    "Haircut - €10"
+                ],
+
+                [
+                    "Beard Trim (€5)",
+                    "Beard Trim - €5"
+                ],
+
+                [
+                    "Face Mask (€5)",
+                    "Face Mask - €5"
+                ],
+
+                [
+                    "Facial Steam (€5)",
+                    "Facial Steam - €5"
+                ],
+
+                [
+                    "Eyebrows Threading (€5)",
+                    "Eyebrows Threading (Women) - €5"
+                ],
+
+                [
+                    "Full Face Threading (€10)",
+                    "Full Face Threading (Women) - €10"
+                ]
+
+            ],
+
+
+            ar: [
+
+                [
+                    "الخدمة الكاملة (€25)",
+                    "الخدمة الكاملة / قص شعر + ذقن + عناية بالوجه - €25"
+                ],
+
+                [
+                    "قص شعر (€10)",
+                    "قص شعر - €10"
+                ],
+
+                [
+                    "تهذيب ذقن (€5)",
+                    "تهذيب ذقن - €5"
+                ],
+
+                [
+                    "ماسك وجه (€5)",
+                    "ماسك وجه - €5"
+                ],
+
+                [
+                    "بخار وجه (€5)",
+                    "بخار وجه - €5"
+                ],
+
+                [
+                    "حواجب بالخيط (€5)",
+                    "حواجب بالخيط (للسيدات) - €5"
+                ],
+
+                [
+                    "الوجه كامل بالخيط (€10)",
+                    "الوجه كامل بالخيط (للسيدات) - €10"
+                ]
+
+            ]
+
         };
 
+
+        /* ================================
+           TRANSLATIONS
+        ================================= */
+
+        const translations = {
+
+            it: {
+
+                nav_services:
+                    "Servizi e Prezzi",
+
+                booking_title:
+                    "Prenota il tuo Appuntamento",
+
+                booking_hours:
+                    "Orario: 09:00 - 21:00",
+
+                booking_note:
+                    "Orario disponibile: tutti i giorni dalle 09:00 alle 21:00.",
+
+                lbl_name:
+                    "Nome e Cognome",
+
+                lbl_phone:
+                    "Telefono",
+
+                lbl_service:
+                    "Scegli il Servizio",
+
+                lbl_date:
+                    "Data",
+
+                lbl_time:
+                    "Ora",
+
+                btn_send_whatsapp:
+                    "Invia Prenotazione via WhatsApp"
+
+            },
+
+
+            en: {
+
+                nav_services:
+                    "Services & Prices",
+
+                booking_title:
+                    "Book Your Appointment",
+
+                booking_hours:
+                    "Hours: 09:00 AM - 09:00 PM",
+
+                booking_note:
+                    "Appointments are available every day from 09:00 AM to 09:00 PM.",
+
+                lbl_name:
+                    "Full Name",
+
+                lbl_phone:
+                    "Phone Number",
+
+                lbl_service:
+                    "Select Service",
+
+                lbl_date:
+                    "Date",
+
+                lbl_time:
+                    "Time",
+
+                btn_send_whatsapp:
+                    "Send Booking via WhatsApp"
+
+            },
+
+
+            ar: {
+
+                nav_services:
+                    "الخدمات والأسعار",
+
+                booking_title:
+                    "احجز موعدك الآن",
+
+                booking_hours:
+                    "ساعات العمل: من 9:00 صباحاً إلى 9:00 مساءً",
+
+                booking_note:
+                    "مواعيد الحجز متاحة يومياً من الساعة 9:00 صباحاً حتى 9:00 مساءً.",
+
+                lbl_name:
+                    "الاسم الكامل",
+
+                lbl_phone:
+                    "رقم الهاتف",
+
+                lbl_service:
+                    "اختر الخدمة",
+
+                lbl_date:
+                    "التاريخ",
+
+                lbl_time:
+                    "الوقت",
+
+                btn_send_whatsapp:
+                    "إرسال طلب الحجز عبر WhatsApp"
+
+            }
+
+        };
+
+
+        /* ================================
+           LANGUAGE
+        ================================= */
+
         function changeLanguage(lang) {
-            localStorage.setItem('selected_lang', lang);
-            document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    el.textContent = translations[lang][key];
+            localStorage.setItem(
+                "selected_lang",
+                lang
+            );
+
+
+            document.documentElement.lang =
+                lang;
+
+
+            document.documentElement.dir =
+                lang === "ar"
+                    ? "rtl"
+                    : "ltr";
+
+
+            document
+                .querySelectorAll("[data-i18n]")
+                .forEach(el => {
+
+                    const key =
+                        el.getAttribute("data-i18n");
+
+
+                    if (
+                        translations[lang] &&
+                        translations[lang][key]
+                    ) {
+
+                        el.textContent =
+                            translations[lang][key];
+
+                    }
+
+                });
+
+
+            /* SERVICES */
+
+            const serviceSelect =
+                document.getElementById("service");
+
+
+            const previousValue =
+                serviceSelect.value;
+
+
+            serviceSelect.innerHTML = "";
+
+
+            serviceOptions[lang].forEach(
+                service => {
+
+                    const option =
+                        document.createElement("option");
+
+
+                    option.value =
+                        service[0];
+
+
+                    option.textContent =
+                        service[1];
+
+
+                    serviceSelect.appendChild(
+                        option
+                    );
+
                 }
-            });
+            );
 
-            document.getElementById('lang-select').value = lang;
+
+            const exists =
+                [...serviceSelect.options]
+                    .some(
+                        option =>
+                            option.value === previousValue
+                    );
+
+
+            if (exists) {
+
+                serviceSelect.value =
+                    previousValue;
+
+            }
+
+
+            document.getElementById(
+                "lang-select"
+            ).value = lang;
+
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('selected_lang') || 'it';
-            changeLanguage(savedLang);
-        });
 
-        function sendWhatsAppBooking(e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const service = document.getElementById('service').value;
-            const date = document.getElementById('date').value;
-            const time = document.getElementById('time').value;
+        /* ================================
+           DATE SETTINGS
+        ================================= */
 
-            const text = `DUE FRATELLI Barbershop Perugia - Booking%0A- Nome/Name: ${name}%0A- Tel: ${phone}%0A- Servizio/Service: ${service}%0A- Data/Date: ${date}%0A- Ora/Time: ${time}`;
-            
-            window.open(`https://wa.me/393888964895?text=${text}`, '_blank');
+        function setMinimumDate() {
+
+            const dateInput =
+                document.getElementById("date");
+
+
+            const now =
+                new Date();
+
+
+            const localDate =
+                new Date(
+                    now.getTime()
+                    -
+                    now.getTimezoneOffset() * 60000
+                )
+                .toISOString()
+                .split("T")[0];
+
+
+            dateInput.min =
+                localDate;
+
         }
+
+
+        /* ================================
+           BOOKING
+        ================================= */
+
+        function sendWhatsAppBooking(event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document.getElementById("name").value.trim();
+
+
+            const phone =
+                document.getElementById("phone").value.trim();
+
+
+            const service =
+                document.getElementById("service").value;
+
+
+            const date =
+                document.getElementById("date").value;
+
+
+            const time =
+                document.getElementById("time").value;
+
+
+            /* TIME VALIDATION */
+
+            if (
+                time < "09:00" ||
+                time > "21:00"
+            ) {
+
+                alert(
+                    "Please choose an appointment time between 09:00 and 21:00."
+                );
+
+                return;
+
+            }
+
+
+            /* DATE VALIDATION */
+
+            if (!date) {
+
+                alert(
+                    "Please select an appointment date."
+                );
+
+                return;
+
+            }
+
+
+            /* WHATSAPP MESSAGE */
+
+            const message =
+                `DUE FRATELLI Barbershop Perugia
+
+- Name: ${name}
+- Phone: ${phone}
+- Service: ${service}
+- Date: ${date}
+- Time: ${time}`;
+
+
+            const whatsappUrl =
+                `https://wa.me/393888964895?text=${encodeURIComponent(message)}`;
+
+
+            window.open(
+                whatsappUrl,
+                "_blank"
+            );
+
+        }
+
+
+        /* ================================
+           START
+        ================================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            () => {
+
+                setMinimumDate();
+
+
+                const savedLang =
+                    localStorage.getItem(
+                        "selected_lang"
+                    ) || "it";
+
+
+                changeLanguage(
+                    savedLang
+                );
+
+
+                lucide.createIcons();
+
+            }
+        );
+
     </script>
+
 </body>
+
 </html>

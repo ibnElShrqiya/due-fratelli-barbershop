@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servizi e Prezzi | DUE FRATELLI Perugia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-neutral-950 text-neutral-100 font-sans">
+
+    <!-- Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-amber-500/20">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-2">
+                <i data-lucide="scissors" class="w-7 h-7 text-amber-500"></i>
+                <span class="text-xl font-black text-amber-400">DUE FRATELLI</span>
+            </a>
+            
+            <div class="flex items-center space-x-3">
+                <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-neutral-900 border border-amber-500/30 text-amber-400 text-xs font-bold rounded-lg px-2 py-1.5 focus:outline-none">
+                    <option value="it">🇮🇹 IT</option>
+                    <option value="en">🇬🇧 EN</option>
+                    <option value="ar">🇪🇬 AR</option>
+                </select>
+                <a href="booking.html" class="bg-amber-500 text-black font-bold px-5 py-2 rounded-full text-sm" data-i18n="btn_book_now">Prenota Ora</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-32 pb-24 max-w-5xl mx-auto px-4">
+        <div class="text-center mb-16">
+            <h1 class="text-4xl sm:text-5xl font-black text-amber-400" data-i18n="pricing_title">Listino Servizi e Prezzi</h1>
+            <p class="text-gray-400 mt-2" data-i18n="pricing_subtitle">Qualità e cura dei dettagli per la tua migliore immagine a Perugia</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            
+            <!-- Full Service -->
+            <div class="bg-gradient-to-r from-amber-500/10 to-neutral-900 border-2 border-amber-500/50 p-6 rounded-2xl flex items-center justify-between md:col-span-2 shadow-lg">
+                <div>
+                    <span class="bg-amber-500 text-black font-black text-xs px-3 py-1 rounded-full uppercase mb-2 inline-block" data-i18n="tag_popular">Più Richiesto</span>
+                    <h3 class="text-2xl font-bold text-white" data-i18n="s1_title">Servizio Completo (Full Service)</h3>
+                    <p class="text-gray-400 text-sm mt-1" data-i18n="s1_desc">Taglio capelli + regolazione barba + trattamento viso</p>
+                </div>
+                <div class="text-3xl font-black text-amber-400">€25</div>
+            </div>
+
+            <!-- Haircut -->
+            <div class="bg-neutral-900 border border-neutral-800 p-6 rounded-2xl flex items-center justify-between hover:border-amber-500/40 transition">
+                <div>
+                    <h3 class="text-xl font-bold text-white" data-i18n="s2_title">Taglio Capelli</h3>
+                    <p class="text-gray-400 text-sm" data-i18n="s2_desc">Taglio professionale e styling</p>
+                </div>
+                <div class="text-2xl font-bold text-amber-400">€10</div>
+            </div>
+
+            <!-- Beard -->
+            <div class="bg-neutral-900 border border-neutral-800 p-6 rounded-2xl flex items-center justify-between hover:border-amber-500/40 transition">
+                <div>
+                    <h3 class="text-xl font-bold text-white" data-i18n="s3_title">Regolazione Barba</h3>
+                    <p class="text-gray-400 text-sm" data-i18n="s3_desc">Rifinitura e sagomatura barba</p>
+                </div>
+                <div class="text-2xl font-bold text-amber-400">€5</div>
+            </div>
+
+            <!-- Mask -->
+            <div class="bg-neutral-900 border border-neutral-800 p-6 rounded-2xl flex items-center justify-between hover:border-amber-500/40 transition">
+                <div>
+                    <h3 class="text-xl font-bold text-white" data-i18n="s4_title">Maschera Viso</h3>
+                    <p class="text-gray-400 text-sm" data-i18n="s4_desc">Pulizia e idratazione della pelle</p>
+                </div>
+                <div class="text-2xl font-bold text-amber-400">€5</div>
+            </div>
+
+            <!-- Steam -->
+            <div class="bg-neutral-900 border border-neutral-800 p-6 rounded-2xl flex items-center justify-between hover:border-amber-500/40 transition">
+                <div>
+                    <h3 class="text-xl font-bold text-white" data-i18n="s5_title">Vapore Viso</h3>
+                    <p class="text-gray-400 text-sm" data-i18n="s5_desc">Trattamento a vapore per i pori</p>
+                </div>
+                <div class="text-2xl font-bold text-amber-400">€5</div>
+            </div>
+
+            <!-- Eyebrows Thread -->
+            <div class="bg-neutral-900 border border-neutral-800 p-6 rounded-2xl flex items-center justify-between hover:border-amber-500/40 transition">
+                <div>
+                    <h3 class="text-xl font-bold text-white" data-i18n="s6_title">Sopracciglia con Filo (Donna)</h3>
+                    <p class="text-gray-400 text-sm" data-i18n="s6_desc">Definizione sopracciglia con filo</p>
+                </div>
+                <div class="text-2xl font-bold text-amber-400">€5</div>
+            </div>
+
+            <!-- Full Face Thread -->
+            <div class="bg-neutral-900 border border-neutral-800 p-6 rounded-2xl flex items-center justify-between hover:border-amber-500/40 transition">
+                <div>
+                    <h3 class="text-xl font-bold text-white" data-i18n="s7_title">Viso Completo con Filo (Donna)</h3>
+                    <p class="text-gray-400 text-sm" data-i18n="s7_desc">Depilazione viso completa con filo</p>
+                </div>
+                <div class="text-2xl font-bold text-amber-400">€10</div>
+            </div>
+
+        </div>
+
+        <div class="mt-12 text-center">
+            <a href="booking.html" class="inline-block bg-amber-500 text-black font-extrabold px-8 py-4 rounded-full shadow-lg hover:bg-amber-600 transition" data-i18n="btn_go_booking">
+                Vai alla Pagina di Prenotazione
+            </a>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        const translations = {
+            it: {
+                btn_book_now: "Prenota Ora",
+                pricing_title: "Listino Servizi e Prezzi",
+                pricing_subtitle: "Qualità e cura dei dettagli per la tua migliore immagine a Perugia",
+                tag_popular: "Più Richiesto",
+                s1_title: "Servizio Completo (Full Service)",
+                s1_desc: "Taglio capelli + regolazione barba + trattamento viso",
+                s2_title: "Taglio Capelli",
+                s2_desc: "Taglio professionale e styling",
+                s3_title: "Regolazione Barba",
+                s3_desc: "Rifinitura e sagomatura barba",
+                s4_title: "Maschera Viso",
+                s4_desc: "Pulizia e idratazione della pelle",
+                s5_title: "Vapore Viso",
+                s5_desc: "Trattamento a vapore per i pori",
+                s6_title: "Sopracciglia con Filo (Donna)",
+                s6_desc: "Definizione sopracciglia con filo",
+                s7_title: "Viso Completo con Filo (Donna)",
+                s7_desc: "Depilazione viso completa con filo",
+                btn_go_booking: "Vai alla Pagina di Prenotazione"
+            },
+            en: {
+                btn_book_now: "Book Now",
+                pricing_title: "Services & Price List",
+                pricing_subtitle: "Quality and attention to detail for your best look in Perugia",
+                tag_popular: "Most Popular",
+                s1_title: "Full Service",
+                s1_desc: "Haircut + beard trim + facial treatment",
+                s2_title: "Haircut",
+                s2_desc: "Professional haircut and styling",
+                s3_title: "Beard Trim",
+                s3_desc: "Beard shaping and trimming",
+                s4_title: "Face Mask",
+                s4_desc: "Skin cleansing and hydration",
+                s5_title: "Facial Steam",
+                s5_desc: "Pore cleansing steam treatment",
+                s6_title: "Eyebrows Threading (Women)",
+                s6_desc: "Eyebrow shaping with thread",
+                s7_title: "Full Face Threading (Women)",
+                s7_desc: "Complete facial hair removal with thread",
+                btn_go_booking: "Go to Booking Page"
+            },
+            ar: {
+                btn_book_now: "احجز الآن",
+                pricing_title: "قائمة الخدمات والأسعار",
+                pricing_subtitle: "أسعار فاخرة ومحددة بعناية لتقديم أفضل عناية في بيروجيا",
+                tag_popular: "الأكثر طلباً",
+                s1_title: "حلاقة كاملة (Full Service)",
+                s1_desc: "قص شعر + تهذيب ذقن + عناية بالوجه",
+                s2_title: "قص شعر",
+                s2_desc: "قص وتصفيف الشعر الاحترافي",
+                s3_title: "تهذيب ذقن",
+                s3_desc: "تحديد ورسم اللحية بدقة",
+                s4_title: "ماسك وجه",
+                s4_desc: "تنظيف ونضارة البشرة",
+                s5_title: "بخار وجه",
+                s5_desc: "جلسة بخار لتفتح مسام البشرة",
+                s6_title: "حواجب بالخيط (للسيدات)",
+                s6_desc: "تنظيف ورسم الحواجب بالخيط",
+                s7_title: "الوجه كامل بالخيط (للسيدات)",
+                s7_desc: "إزالة شعر الوجه كاملاً بالخيط",
+                btn_go_booking: "الانتقال إلى صفحة الحجز المباشر"
+            }
+        };
+
+        function changeLanguage(lang) {
+            localStorage.setItem('selected_lang', lang);
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            document.getElementById('lang-select').value = lang;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('selected_lang') || 'it';
+            changeLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>

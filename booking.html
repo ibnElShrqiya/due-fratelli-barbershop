@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prenota un Appuntamento | DUE FRATELLI Perugia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-neutral-950 text-neutral-100 font-sans">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-amber-500/20">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-2">
+                <i data-lucide="scissors" class="w-7 h-7 text-amber-500"></i>
+                <span class="text-xl font-black text-amber-400">DUE FRATELLI</span>
+            </a>
+            
+            <div class="flex items-center space-x-3">
+                <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-neutral-900 border border-amber-500/30 text-amber-400 text-xs font-bold rounded-lg px-2 py-1.5 focus:outline-none">
+                    <option value="it">🇮🇹 IT</option>
+                    <option value="en">🇬🇧 EN</option>
+                    <option value="ar">🇪🇬 AR</option>
+                </select>
+                <a href="pricing.html" class="text-xs text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-full" data-i18n="nav_services">Servizi e Prezzi</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-32 pb-24 max-w-3xl mx-auto px-4">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl sm:text-5xl font-black text-amber-400" data-i18n="booking_title">Prenota il tuo Appuntamento</h1>
+            <p class="text-gray-400 mt-2">Via M. Angeloni, 36, Perugia - <span data-i18n="booking_hours">Orario: 09:00 - 21:00</span></p>
+        </div>
+
+        <form onsubmit="sendWhatsAppBooking(event)" class="bg-neutral-900 border border-amber-500/20 p-8 rounded-3xl space-y-6 shadow-2xl">
+            
+            <div>
+                <label class="block text-sm font-medium text-amber-300 mb-2" data-i18n="lbl_name">Nome e Cognome</label>
+                <input type="text" id="name" required placeholder="Es. Marco Rossi" class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-amber-300 mb-2" data-i18n="lbl_phone">Telefono</label>
+                <input type="tel" id="phone" required placeholder="+39 000 000 0000" class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-amber-300 mb-2" data-i18n="lbl_service">Scegli il Servizio</label>
+                <select id="service" class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
+                    <option value="Servizio Completo (€25)">Servizio Completo / Full Service - €25</option>
+                    <option value="Taglio Capelli (€10)">Taglio Capelli / Haircut - €10</option>
+                    <option value="Regolazione Barba (€5)">Regolazione Barba / Beard Trim - €5</option>
+                    <option value="Maschera Viso (€5)">Maschera Viso / Face Mask - €5</option>
+                    <option value="Vapore Viso (€5)">Vapore Viso / Facial Steam - €5</option>
+                    <option value="Sopracciglia Filo (€5)">Sopracciglia con Filo (Donna) - €5</option>
+                    <option value="Viso Completo Filo (€10)">Viso Completo con Filo (Donna) - €10</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-amber-300 mb-2" data-i18n="lbl_date">Data</label>
+                    <input type="date" id="date" required class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-amber-300 mb-2" data-i18n="lbl_time">Ora</label>
+                    <input type="time" id="time" required class="w-full bg-neutral-950 border border-neutral-800 focus:border-amber-500 rounded-xl px-4 py-3 text-white outline-none">
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-lg">
+                <i data-lucide="message-square" class="w-6 h-6"></i>
+                <span data-i18n="btn_send_whatsapp">Invia Prenotazione via WhatsApp</span>
+            </button>
+        </form>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        const translations = {
+            it: {
+                nav_services: "Servizi e Prezzi",
+                booking_title: "Prenota il tuo Appuntamento",
+                booking_hours: "Orario: 09:00 - 21:00",
+                lbl_name: "Nome e Cognome",
+                lbl_phone: "Telefono",
+                lbl_service: "Scegli il Servizio",
+                lbl_date: "Data",
+                lbl_time: "Ora",
+                btn_send_whatsapp: "Invia Prenotazione via WhatsApp"
+            },
+            en: {
+                nav_services: "Services & Prices",
+                booking_title: "Book Your Appointment",
+                booking_hours: "Hours: 09:00 AM - 09:00 PM",
+                lbl_name: "Full Name",
+                lbl_phone: "Phone Number",
+                lbl_service: "Select Service",
+                lbl_date: "Date",
+                lbl_time: "Time",
+                btn_send_whatsapp: "Send Booking via WhatsApp"
+            },
+            ar: {
+                nav_services: "الخدمات والأسعار",
+                booking_title: "احجز موعدك الآن",
+                booking_hours: "ساعات العمل: 9:00 AM - 9:00 PM",
+                lbl_name: "الاسم الكامل",
+                lbl_phone: "رقم الهاتف",
+                lbl_service: "اختر الخدمة",
+                lbl_date: "التاريخ",
+                lbl_time: "الوقت",
+                btn_send_whatsapp: "إرسال طلب الحجز عبر WhatsApp"
+            }
+        };
+
+        function changeLanguage(lang) {
+            localStorage.setItem('selected_lang', lang);
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            document.getElementById('lang-select').value = lang;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('selected_lang') || 'it';
+            changeLanguage(savedLang);
+        });
+
+        function sendWhatsAppBooking(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const service = document.getElementById('service').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+
+            const text = `DUE FRATELLI Barbershop Perugia - Booking%0A- Nome/Name: ${name}%0A- Tel: ${phone}%0A- Servizio/Service: ${service}%0A- Data/Date: ${date}%0A- Ora/Time: ${time}`;
+            
+            window.open(`https://wa.me/393888964895?text=${text}`, '_blank');
+        }
+    </script>
+</body>
+</html>

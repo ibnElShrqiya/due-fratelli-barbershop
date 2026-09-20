@@ -3,354 +3,895 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>DUE FRATELLI | Barbershop Perugia</title>
+
     <meta name="description" content="DUE FRATELLI Barbershop a Perugia, Italia. Taglio capelli, barba e cura del viso di alta qualità.">
-    
-    <!-- Tailwind CSS CDN -->
+
     <script src="https://cdn.tailwindcss.com"></script>
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        gold: { 400: '#facc15', 500: '#eab308', 600: '#ca8a04' }
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
                     }
                 }
             }
         }
     </script>
 
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Schema.org Structured Data -->
+    <!-- Schema.org -->
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@type": "BarberShop",
-      "name": "DUE FRATELLI Barbershop",
-      "image": "https://images.unsplash.com/photo-1503951914875-452162b0f3f1",
-      "telephone": "+393888964895",
-      "priceRange": "€",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Via M. Angeloni, 36",
-        "addressLocality": "Perugia",
-        "postalCode": "06124",
-        "addressCountry": "IT"
-      },
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-        "opens": "09:00",
-        "closes": "21:00"
-      }
+        "@context": "https://schema.org",
+        "@type": "BarberShop",
+        "name": "DUE FRATELLI Barbershop",
+        "image": "https://images.unsplash.com/photo-1503951914875-452162b0f3f1",
+        "telephone": "+393888964895",
+        "priceRange": "€",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Via M. Angeloni, 36",
+            "addressLocality": "Perugia",
+            "postalCode": "06124",
+            "addressCountry": "IT"
+        },
+        "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday"
+            ],
+            "opens": "09:00",
+            "closes": "21:00"
+        }
     }
     </script>
 </head>
+
 <body class="bg-neutral-950 text-neutral-100 font-sans selection:bg-amber-500 selection:text-black">
 
-    <!-- 🧭 HEADER / NAVBAR -->
+    <!-- HEADER -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-amber-500/20">
+
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+
             <a href="index.html" class="flex items-center space-x-2">
                 <i data-lucide="scissors" class="w-7 h-7 text-amber-500"></i>
+
                 <span class="text-xl sm:text-2xl font-black tracking-wider bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 bg-clip-text text-transparent">
                     DUE FRATELLI
                 </span>
             </a>
 
+            <!-- DESKTOP NAV -->
             <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-300">
-                <a href="index.html" class="text-amber-400 font-bold" data-i18n="nav_home">Home</a>
-                <a href="#about" class="hover:text-amber-400 transition" data-i18n="nav_about">Chi Siamo</a>
-                <a href="pricing.html" class="hover:text-amber-400 transition" data-i18n="nav_services">Servizi e Prezzi</a>
-                <a href="#contact" class="hover:text-amber-400 transition" data-i18n="nav_contact">Contatti</a>
+
+                <a href="index.html"
+                   class="text-amber-400 font-bold"
+                   data-i18n="nav_home">
+                    Home
+                </a>
+
+                <a href="#about"
+                   class="hover:text-amber-400 transition"
+                   data-i18n="nav_about">
+                    Chi Siamo
+                </a>
+
+                <a href="pricing.html"
+                   class="hover:text-amber-400 transition"
+                   data-i18n="nav_services">
+                    Servizi e Prezzi
+                </a>
+
+                <a href="#contact"
+                   class="hover:text-amber-400 transition"
+                   data-i18n="nav_contact">
+                    Contatti
+                </a>
+
             </nav>
 
-            <div class="hidden md:flex items-center space-x-4">
-                <!-- Language Selector -->
-                <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-neutral-900 border border-amber-500/30 text-amber-400 text-xs font-bold rounded-lg px-2.5 py-1.5 focus:outline-none">
+            <!-- DESKTOP ACTIONS -->
+            <div class="hidden md:flex items-center space-x-3">
+
+                <select
+                    id="lang-select"
+                    onchange="changeLanguage(this.value)"
+                    class="bg-neutral-900 border border-amber-500/30 text-amber-400 text-xs font-bold rounded-lg px-2.5 py-1.5 focus:outline-none">
+
                     <option value="it">🇮🇹 IT</option>
                     <option value="en">🇬🇧 EN</option>
                     <option value="ar">🇪🇬 AR</option>
+
                 </select>
 
-                <a href="booking.html" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-extrabold px-6 py-2.5 rounded-full shadow-lg transition transform hover:scale-105" data-i18n="btn_book_now">
+                <a
+                    href="booking.html"
+                    class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-extrabold px-6 py-2.5 rounded-full shadow-lg transition transform hover:scale-105"
+                    data-i18n="btn_book_now">
+
                     Prenota Ora
                 </a>
+
+                <!-- WHATSAPP DESKTOP -->
+                <a
+                    href="https://wa.me/393888964895"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500 hover:text-white font-bold px-5 py-2.5 rounded-full transition"
+                    data-i18n="btn_whatsapp">
+
+                    WhatsApp
+                </a>
+
             </div>
 
+            <!-- MOBILE ACTIONS -->
             <div class="flex items-center space-x-2 md:hidden">
-                <select id="lang-select-mobile" onchange="changeLanguage(this.value)" class="bg-neutral-900 border border-amber-500/30 text-amber-400 text-xs font-bold rounded-lg px-2 py-1">
+
+                <select
+                    id="lang-select-mobile"
+                    onchange="changeLanguage(this.value)"
+                    class="bg-neutral-900 border border-amber-500/30 text-amber-400 text-xs font-bold rounded-lg px-2 py-1">
+
                     <option value="it">IT</option>
                     <option value="en">EN</option>
                     <option value="ar">AR</option>
+
                 </select>
 
-                <button onclick="toggleMobileMenu()" class="text-amber-400 p-2">
+                <button
+                    onclick="toggleMobileMenu()"
+                    class="text-amber-400 p-2">
+
                     <i data-lucide="menu" class="w-7 h-7"></i>
+
                 </button>
+
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-neutral-950 border-b border-amber-500/20 px-6 py-6 space-y-4 text-center">
-            <a href="index.html" onclick="toggleMobileMenu()" class="block py-2 text-amber-400 font-bold" data-i18n="nav_home">Home</a>
-            <a href="pricing.html" class="block py-2 text-gray-200" data-i18n="nav_services">Servizi e Prezzi</a>
-            <a href="#about" onclick="toggleMobileMenu()" class="block py-2 text-gray-200" data-i18n="nav_about">Chi Siamo</a>
-            <a href="#contact" onclick="toggleMobileMenu()" class="block py-2 text-gray-200" data-i18n="nav_contact">Contatti</a>
-            <a href="booking.html" class="block py-3 bg-amber-500 text-black font-bold rounded-lg" data-i18n="btn_book_now">Prenota Ora</a>
+        <!-- MOBILE MENU -->
+        <div
+            id="mobile-menu"
+            class="hidden md:hidden bg-neutral-950 border-b border-amber-500/20 px-6 py-6 space-y-4 text-center">
+
+            <a href="index.html"
+               onclick="toggleMobileMenu()"
+               class="block py-2 text-amber-400 font-bold"
+               data-i18n="nav_home">
+                Home
+            </a>
+
+            <a href="pricing.html"
+               class="block py-2 text-gray-200"
+               data-i18n="nav_services">
+                Servizi e Prezzi
+            </a>
+
+            <a href="#about"
+               onclick="toggleMobileMenu()"
+               class="block py-2 text-gray-200"
+               data-i18n="nav_about">
+                Chi Siamo
+            </a>
+
+            <a href="#contact"
+               onclick="toggleMobileMenu()"
+               class="block py-2 text-gray-200"
+               data-i18n="nav_contact">
+                Contatti
+            </a>
+
+            <a href="booking.html"
+               class="block py-3 bg-amber-500 text-black font-bold rounded-lg"
+               data-i18n="btn_book_now">
+                Prenota Ora
+            </a>
+
+            <a
+                href="https://wa.me/393888964895"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block py-3 bg-emerald-600 text-white font-bold rounded-lg"
+                data-i18n="btn_whatsapp">
+
+                WhatsApp
+            </a>
+
         </div>
+
     </header>
 
-    <!-- 📱 BOTTOM STICKY BAR FOR MOBILE -->
-    <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-neutral-950/95 border-t border-amber-500/30 backdrop-blur-lg flex justify-around items-center py-2 text-xs text-amber-400">
+
+    <!-- MOBILE BOTTOM BAR -->
+    <div
+        class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-neutral-950/95 border-t border-amber-500/30 backdrop-blur-lg flex justify-around items-center py-2 text-xs text-amber-400">
+
         <a href="booking.html" class="flex flex-col items-center py-1">
             <i data-lucide="calendar" class="w-5 h-5 mb-0.5"></i>
             <span data-i18n="sticky_book">Prenota</span>
         </a>
+
         <a href="tel:+393888964895" class="flex flex-col items-center py-1">
             <i data-lucide="phone" class="w-5 h-5 mb-0.5"></i>
             <span data-i18n="sticky_call">Chiama</span>
         </a>
-        <a href="https://wa.me/393888964895" target="_blank" class="flex flex-col items-center py-1 text-green-400">
+
+        <a
+            href="https://wa.me/393888964895"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex flex-col items-center py-1 text-green-400">
+
             <i data-lucide="message-square" class="w-5 h-5 mb-0.5"></i>
             <span>WhatsApp</span>
+
         </a>
-        <a href="https://maps.app.goo.gl/zb4P64UKobSWt2aF9?g_st=iw" target="_blank" class="flex flex-col items-center py-1">
+
+        <a
+            href="https://maps.app.goo.gl/zb4P64UKobSWt2aF9?g_st=iw"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex flex-col items-center py-1">
+
             <i data-lucide="map-pin" class="w-5 h-5 mb-0.5"></i>
             <span data-i18n="sticky_map">Mappa</span>
+
         </a>
+
     </div>
 
-    <!-- 🔥 HERO SECTION -->
+
+    <!-- HERO -->
     <section class="relative min-h-screen pt-32 pb-20 flex items-center justify-center overflow-hidden">
+
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid md:grid-cols-2 gap-12 items-center">
-            
+
             <div class="space-y-6 text-center md:text-left rtl:md:text-right">
+
                 <div class="inline-flex items-center space-x-2 bg-amber-500/10 border border-amber-500/30 rounded-full px-4 py-1.5 text-xs text-amber-400">
+
                     <i data-lucide="map-pin" class="w-4 h-4 mr-1"></i>
+
                     <span>Perugia • Italia</span>
+
                 </div>
 
                 <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-tight">
-                    <span class="bg-gradient-to-r from-amber-100 via-amber-300 to-amber-500 bg-clip-text text-transparent" data-i18n="hero_title">
+
+                    <span
+                        class="bg-gradient-to-r from-amber-100 via-amber-300 to-amber-500 bg-clip-text text-transparent"
+                        data-i18n="hero_title">
+
                         Il Tuo Stile Inizia da DUE FRATELLI
+
                     </span>
+
                 </h1>
 
-                <p class="text-gray-300 text-base sm:text-lg max-w-xl font-light leading-relaxed" data-i18n="hero_subtitle">
-                    Barber shop professionale nel cuore di Perugia. Stile impeccabile e un'esperienza unica fin dal primo minuto.
+                <p
+                    class="text-gray-300 text-base sm:text-lg max-w-xl font-light leading-relaxed"
+                    data-i18n="hero_subtitle">
+
+                    Barber shop professionale nel cuore di Perugia.
+                    Stile impeccabile e un'esperienza unica fin dal primo minuto.
+
                 </p>
 
                 <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 pt-4">
-                    <a href="booking.html" class="w-full sm:w-auto text-center bg-amber-500 hover:bg-amber-600 text-black font-bold px-8 py-4 rounded-full shadow-lg shadow-amber-500/20 transition transform hover:-translate-y-1" data-i18n="btn_book_now">
+
+                    <a
+                        href="booking.html"
+                        class="w-full sm:w-auto text-center bg-amber-500 hover:bg-amber-600 text-black font-bold px-8 py-4 rounded-full shadow-lg shadow-amber-500/20 transition transform hover:-translate-y-1"
+                        data-i18n="btn_book_now">
+
                         Prenota Ora
+
                     </a>
-                    <a href="pricing.html" class="w-full sm:w-auto text-center bg-neutral-900 border border-neutral-800 hover:border-amber-500/50 text-white font-semibold px-8 py-4 rounded-full transition" data-i18n="btn_view_pricing">
+
+                    <a
+                        href="pricing.html"
+                        class="w-full sm:w-auto text-center bg-neutral-900 border border-neutral-800 hover:border-amber-500/50 text-white font-semibold px-8 py-4 rounded-full transition"
+                        data-i18n="btn_view_pricing">
+
                         Vedi Listino Prezzi
+
                     </a>
+
                 </div>
+
             </div>
 
+
+            <!-- HERO IMAGE -->
             <div class="relative flex justify-center">
+
                 <div class="relative w-full max-w-md aspect-[4/5] rounded-2xl overflow-hidden border-2 border-amber-500/30 shadow-2xl">
-                    <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=80" alt="DUE FRATELLI Barbershop Perugia" class="w-full h-full object-cover">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=80"
+                        alt="DUE FRATELLI Barbershop Perugia"
+                        class="w-full h-full object-cover">
+
                     <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent opacity-80"></div>
+
                     <div class="absolute bottom-6 right-6 left-6 p-4 bg-neutral-900/90 backdrop-blur-md rounded-xl border border-amber-500/20">
-                        <p class="text-amber-400 font-bold text-sm">DUE FRATELLI Barbershop</p>
-                        <p class="text-xs text-gray-300">Via M. Angeloni, 36, Perugia</p>
+
+                        <p class="text-amber-400 font-bold text-sm">
+                            DUE FRATELLI Barbershop
+                        </p>
+
+                        <p class="text-xs text-gray-300">
+                            Via M. Angeloni, 36, Perugia
+                        </p>
+
                     </div>
+
                 </div>
+
             </div>
 
         </div>
+
     </section>
 
-    <!-- 💈 ABOUT SECTION (قسم من نحن) -->
-    <section id="about" class="py-20 bg-neutral-900/60 border-t border-amber-500/10">
+
+    <!-- ABOUT -->
+    <section
+        id="about"
+        class="py-20 bg-neutral-900/60 border-t border-amber-500/10">
+
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
             <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
-                <h2 class="text-3xl sm:text-4xl font-black text-amber-400" data-i18n="about_title">Chi Siamo</h2>
-                <p class="text-gray-300 text-base sm:text-lg leading-relaxed" data-i18n="about_desc">
+
+                <h2
+                    class="text-3xl sm:text-4xl font-black text-amber-400"
+                    data-i18n="about_title">
+
+                    Chi Siamo
+
+                </h2>
+
+                <p
+                    class="text-gray-300 text-base sm:text-lg leading-relaxed"
+                    data-i18n="about_desc">
+
                     Benvenuti da DUE FRATELLI, il punto di riferimento a Perugia per chi cerca uno stile unico, cura dei dettagli e professionalità. Uniamo la tradizione della barberia classica alle ultime tendenze di styling moderne.
+
                 </p>
+
             </div>
+
 
             <div class="grid md:grid-cols-3 gap-8">
+
                 <div class="bg-neutral-900 border border-amber-500/20 p-6 rounded-2xl text-center space-y-3">
+
                     <div class="w-12 h-12 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-full flex items-center justify-center mx-auto">
+
                         <i data-lucide="scissors" class="w-6 h-6"></i>
+
                     </div>
-                    <h3 class="text-xl font-bold text-white" data-i18n="about_f1_title">Esperienza e Precisione</h3>
-                    <p class="text-gray-400 text-sm" data-i18n="about_f1_desc">Tagli di capelli e regolazione barba realizzati su misura per valorizzare il tuo stile.</p>
+
+                    <h3
+                        class="text-xl font-bold text-white"
+                        data-i18n="about_f1_title">
+
+                        Esperienza e Precisione
+
+                    </h3>
+
+                    <p
+                        class="text-gray-400 text-sm"
+                        data-i18n="about_f1_desc">
+
+                        Tagli di capelli e regolazione barba realizzati su misura per valorizzare il tuo stile.
+
+                    </p>
+
                 </div>
 
+
                 <div class="bg-neutral-900 border border-amber-500/20 p-6 rounded-2xl text-center space-y-3">
+
                     <div class="w-12 h-12 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-full flex items-center justify-center mx-auto">
+
                         <i data-lucide="sparkles" class="w-6 h-6"></i>
+
                     </div>
-                    <h3 class="text-xl font-bold text-white" data-i18n="about_f2_title">Cura del Viso</h3>
-                    <p class="text-gray-400 text-sm" data-i18n="about_f2_desc">Trattamenti di pulizia viso, vapore e maschere idratanti per la massima freschezza.</p>
+
+                    <h3
+                        class="text-xl font-bold text-white"
+                        data-i18n="about_f2_title">
+
+                        Cura del Viso
+
+                    </h3>
+
+                    <p
+                        class="text-gray-400 text-sm"
+                        data-i18n="about_f2_desc">
+
+                        Trattamenti di pulizia viso, vapore e maschere idratanti per la massima freschezza.
+
+                    </p>
+
                 </div>
 
+
                 <div class="bg-neutral-900 border border-amber-500/20 p-6 rounded-2xl text-center space-y-3">
+
                     <div class="w-12 h-12 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-full flex items-center justify-center mx-auto">
+
                         <i data-lucide="heart" class="w-6 h-6"></i>
+
                     </div>
-                    <h3 class="text-xl font-bold text-white" data-i18n="about_f3_title">Ambiente Accogliente</h3>
-                    <p class="text-gray-400 text-sm" data-i18n="about_f3_desc">Un'atmosfera rilassante e professionale dove ogni cliente è al centro dell'attenzione.</p>
+
+                    <h3
+                        class="text-xl font-bold text-white"
+                        data-i18n="about_f3_title">
+
+                        Ambiente Accogliente
+
+                    </h3>
+
+                    <p
+                        class="text-gray-400 text-sm"
+                        data-i18n="about_f3_desc">
+
+                        Un'atmosfera rilassante e professionale dove ogni cliente è al centro dell'attenzione.
+
+                    </p>
+
                 </div>
+
             </div>
+
         </div>
+
     </section>
 
-    <!-- 📍 LOCATION & CONTACT SECTION -->
-    <section id="contact" class="py-20 bg-neutral-900 border-t border-amber-500/10">
+
+    <!-- CONTACT -->
+    <section
+        id="contact"
+        class="py-20 bg-neutral-900 border-t border-amber-500/10">
+
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
+
             <div class="space-y-6">
-                <h2 class="text-3xl font-black text-amber-400" data-i18n="contact_title">Vieni a Trovarci</h2>
+
+                <h2
+                    class="text-3xl font-black text-amber-400"
+                    data-i18n="contact_title">
+
+                    Vieni a Trovarci
+
+                </h2>
+
                 <div class="space-y-4 text-gray-300">
+
                     <p class="flex items-start gap-3">
-                        <i data-lucide="map-pin" class="text-amber-400 w-5 h-5 flex-shrink-0 mt-1"></i>
-                        <span>Via M. Angeloni, 36, 06124 Perugia PG, Italia</span>
+
+                        <i data-lucide="map-pin"
+                           class="text-amber-400 w-5 h-5 flex-shrink-0 mt-1"></i>
+
+                        <span>
+                            Via M. Angeloni, 36, 06124 Perugia PG, Italia
+                        </span>
+
                     </p>
+
                     <p class="flex items-center gap-3">
-                        <i data-lucide="clock" class="text-amber-400 w-5 h-5 flex-shrink-0"></i>
-                        <span data-i18n="contact_hours">Aperto tutti i giorni: 09:00 - 21:00</span>
+
+                        <i data-lucide="clock"
+                           class="text-amber-400 w-5 h-5 flex-shrink-0"></i>
+
+                        <span data-i18n="contact_hours">
+                            Aperto tutti i giorni: 09:00 - 21:00
+                        </span>
+
                     </p>
+
                     <p class="flex items-center gap-3">
-                        <i data-lucide="phone" class="text-amber-400 w-5 h-5 flex-shrink-0"></i>
-                        <a href="tel:+393888964895" class="hover:text-amber-400">+39 388 896 4895</a>
+
+                        <i data-lucide="phone"
+                           class="text-amber-400 w-5 h-5 flex-shrink-0"></i>
+
+                        <a
+                            href="tel:+393888964895"
+                            class="hover:text-amber-400">
+
+                            +39 388 896 4895
+
+                        </a>
+
                     </p>
+
                 </div>
-                <a href="https://maps.app.goo.gl/zb4P64UKobSWt2aF9?g_st=iw" target="_blank" class="inline-flex items-center gap-2 bg-amber-500 text-black font-bold px-6 py-3 rounded-full hover:bg-amber-600 transition">
-                    <i data-lucide="navigation" class="w-4 h-4"></i>
-                    <span data-i18n="btn_open_maps">Apri in Google Maps</span>
-                </a>
+
+
+                <div class="flex flex-wrap gap-3">
+
+                    <a
+                        href="https://maps.app.goo.gl/zb4P64UKobSWt2aF9?g_st=iw"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-2 bg-amber-500 text-black font-bold px-6 py-3 rounded-full hover:bg-amber-600 transition">
+
+                        <i data-lucide="navigation" class="w-4 h-4"></i>
+
+                        <span data-i18n="btn_open_maps">
+                            Apri in Google Maps
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="https://wa.me/393888964895"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-2 bg-emerald-600 text-white font-bold px-6 py-3 rounded-full hover:bg-emerald-700 transition">
+
+                        <i data-lucide="message-square" class="w-4 h-4"></i>
+
+                        <span data-i18n="btn_contact_whatsapp">
+                            WhatsApp
+                        </span>
+
+                    </a>
+
+                </div>
+
             </div>
-            
+
+
+            <!-- MAP -->
             <div class="h-80 rounded-2xl overflow-hidden border border-amber-500/20 shadow-xl">
-                <!-- Direct Google Maps Embed -->
-                <iframe 
-                    title="DUE FRATELLI Perugia Map" 
-                    src="https://maps.google.com/maps?q=Via%20M.%20Angeloni%2C%2036%2C%2006124%20Perugia%20PG%2C%20Italy&t=&z=16&ie=UTF8&iwloc=&output=embed" 
-                    class="w-full h-full border-0" 
-                    allowfullscreen="" 
+
+                <iframe
+                    title="DUE FRATELLI Perugia Map"
+                    src="https://maps.google.com/maps?q=Via%20M.%20Angeloni%2C%2036%2C%2006124%20Perugia%20PG%2C%20Italy&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                    class="w-full h-full border-0"
+                    allowfullscreen=""
                     loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
+
             </div>
+
         </div>
+
     </section>
 
-    <!-- 🦶 FOOTER -->
+
+    <!-- FOOTER -->
     <footer class="bg-neutral-950 py-10 border-t border-neutral-900 text-center text-xs text-gray-500">
-        <p>© 2026 DUE FRATELLI Barbershop Perugia. All Rights Reserved.</p>
+
+        <p>
+            © 2026 DUE FRATELLI Barbershop Perugia. All Rights Reserved.
+        </p>
+
     </footer>
 
+
+    <!-- JAVASCRIPT -->
     <script>
+
         lucide.createIcons();
 
+
         const translations = {
+
             it: {
+
                 nav_home: "Home",
                 nav_about: "Chi Siamo",
                 nav_services: "Servizi e Prezzi",
                 nav_contact: "Contatti",
+
                 btn_book_now: "Prenota Ora",
+                btn_whatsapp: "WhatsApp",
                 btn_view_pricing: "Vedi Listino Prezzi",
-                hero_title: "Il Tuo Stile Inizia da DUE FRATELLI",
-                hero_subtitle: "Barber shop professionale nel cuore di Perugia. Stile impeccabile e un'esperienza unica fin dal primo minuto.",
-                about_title: "Chi Siamo",
-                about_desc: "Benvenuti da DUE FRATELLI, il punto di riferimento a Perugia per chi cerca uno stile unico, cura dei dettagli e professionalità. Uniamo la tradizione della barberia classica alle ultime tendenze di styling moderne.",
-                about_f1_title: "Esperienza e Precisione",
-                about_f1_desc: "Tagli di capelli e regolazione barba realizzati su misura per valorizzare il tuo stile.",
-                about_f2_title: "Cura del Viso",
-                about_f2_desc: "Trattamenti di pulizia viso, vapore e maschere idratanti per la massima freschezza.",
-                about_f3_title: "Ambiente Accogliente",
-                about_f3_desc: "Un'atmosfera rilassante e professionale dove ogni cliente è al centro dell'attenzione.",
-                contact_title: "Vieni a Trovarci",
-                contact_hours: "Aperto tutti i giorni: 09:00 - 21:00",
-                btn_open_maps: "Apri in Google Maps",
-                sticky_book: "Prenota",
-                sticky_call: "Chiama",
-                sticky_map: "Mappa"
+
+                hero_title:
+                    "Il Tuo Stile Inizia da DUE FRATELLI",
+
+                hero_subtitle:
+                    "Barber shop professionale nel cuore di Perugia. Stile impeccabile e un'esperienza unica fin dal primo minuto.",
+
+                about_title:
+                    "Chi Siamo",
+
+                about_desc:
+                    "Benvenuti da DUE FRATELLI, il punto di riferimento a Perugia per chi cerca uno stile unico, cura dei dettagli e professionalità. Uniamo la tradizione della barberia classica alle ultime tendenze di styling moderne.",
+
+                about_f1_title:
+                    "Esperienza e Precisione",
+
+                about_f1_desc:
+                    "Tagli di capelli e regolazione barba realizzati su misura per valorizzare il tuo stile.",
+
+                about_f2_title:
+                    "Cura del Viso",
+
+                about_f2_desc:
+                    "Trattamenti di pulizia viso, vapore e maschere idratanti per la massima freschezza.",
+
+                about_f3_title:
+                    "Ambiente Accogliente",
+
+                about_f3_desc:
+                    "Un'atmosfera rilassante e professionale dove ogni cliente è al centro dell'attenzione.",
+
+                contact_title:
+                    "Vieni a Trovarci",
+
+                contact_hours:
+                    "Aperto tutti i giorni: 09:00 - 21:00",
+
+                btn_open_maps:
+                    "Apri in Google Maps",
+
+                btn_contact_whatsapp:
+                    "WhatsApp",
+
+                sticky_book:
+                    "Prenota",
+
+                sticky_call:
+                    "Chiama",
+
+                sticky_map:
+                    "Mappa"
             },
+
+
             en: {
-                nav_home: "Home",
-                nav_about: "About Us",
-                nav_services: "Services & Prices",
-                nav_contact: "Contact",
-                btn_book_now: "Book Now",
-                btn_view_pricing: "View Price List",
-                hero_title: "Your Style Begins at DUE FRATELLI",
-                hero_subtitle: "Professional barber shop in the heart of Perugia. Flawless style and a unique experience from the first minute.",
-                about_title: "About Us",
-                about_desc: "Welcome to DUE FRATELLI, Perugia's premier destination for unique style, attention to detail, and professionalism. We blend traditional barbering with modern styling trends.",
-                about_f1_title: "Experience & Precision",
-                about_f1_desc: "Tailored haircuts and beard trims designed to enhance your personal style.",
-                about_f2_title: "Facial Care",
-                about_f2_desc: "Deep cleansing, facial steam, and hydrating masks for ultimate freshness.",
-                about_f3_title: "Welcoming Atmosphere",
-                about_f3_desc: "A relaxed, professional environment where every customer comes first.",
-                contact_title: "Visit Us",
-                contact_hours: "Open Every Day: 09:00 AM - 09:00 PM",
-                btn_open_maps: "Open in Google Maps",
-                sticky_book: "Book",
-                sticky_call: "Call",
-                sticky_map: "Map"
+
+                nav_home:
+                    "Home",
+
+                nav_about:
+                    "About Us",
+
+                nav_services:
+                    "Services & Prices",
+
+                nav_contact:
+                    "Contact",
+
+                btn_book_now:
+                    "Book Now",
+
+                btn_whatsapp:
+                    "WhatsApp",
+
+                btn_view_pricing:
+                    "View Price List",
+
+                hero_title:
+                    "Your Style Begins at DUE FRATELLI",
+
+                hero_subtitle:
+                    "Professional barber shop in the heart of Perugia. Flawless style and a unique experience from the first minute.",
+
+                about_title:
+                    "About Us",
+
+                about_desc:
+                    "Welcome to DUE FRATELLI, Perugia's premier destination for unique style, attention to detail, and professionalism. We blend traditional barbering with modern styling trends.",
+
+                about_f1_title:
+                    "Experience & Precision",
+
+                about_f1_desc:
+                    "Tailored haircuts and beard trims designed to enhance your personal style.",
+
+                about_f2_title:
+                    "Facial Care",
+
+                about_f2_desc:
+                    "Deep cleansing, facial steam, and hydrating masks for ultimate freshness.",
+
+                about_f3_title:
+                    "Welcoming Atmosphere",
+
+                about_f3_desc:
+                    "A relaxed, professional environment where every customer comes first.",
+
+                contact_title:
+                    "Visit Us",
+
+                contact_hours:
+                    "Open Every Day: 09:00 AM - 09:00 PM",
+
+                btn_open_maps:
+                    "Open in Google Maps",
+
+                btn_contact_whatsapp:
+                    "WhatsApp",
+
+                sticky_book:
+                    "Book",
+
+                sticky_call:
+                    "Call",
+
+                sticky_map:
+                    "Map"
             },
+
+
             ar: {
-                nav_home: "الرئيسية",
-                nav_about: "من نحن",
-                nav_services: "الخدمات والأسعار",
-                nav_contact: "تواصل معنا",
-                btn_book_now: "احجز موعدك الآن",
-                btn_view_pricing: "عرض قائمة الأسعار",
-                hero_title: "ستايلك يبدأ من DUE FRATELLI",
-                hero_subtitle: "حلاقة رجالي باحتراف في قلب بيروجيا، ستايل يليق بيك، وتجربة مختلفة من أول دقيقة.",
-                about_title: "من نحن",
-                about_desc: "مرحباً بكم في DUE FRATELLI، وجهتكم الأولى في بيروجيا لكل من يبحث عن الأناقة والاهتمام بأدق التفاصيل والاحترافية. ندمج بين فن الحلاقة الكلاسيكي وأحدث صيحات التصفيف الحديثة.",
-                about_f1_title: "خبرة ودقة",
-                about_f1_desc: "قص شعر وتحديد ذقن بمقاييس دقيقة تناسب مظهرك وستايلك الخاص.",
-                about_f2_title: "عناية بالبشرة",
-                about_f2_desc: "جلسات تنظيف وجه، بخار، وماسكات مرطبة لأعلى درجات الانتعاش.",
-                about_f3_title: "أجواء مريحة",
-                about_f3_desc: "بيئة احترافية ومريحة نضمن فيها تقديم أفضل تجربة لكل زبون.",
-                contact_title: "تفضل بزيارتنا",
-                contact_hours: "مفتوح يومياً: من 9:00 صباحاً إلى 9:00 مساءً",
-                btn_open_maps: "فتح الموقع على Google Maps",
-                sticky_book: "حجز",
-                sticky_call: "اتصال",
-                sticky_map: "الموقع"
+
+                nav_home:
+                    "الرئيسية",
+
+                nav_about:
+                    "من نحن",
+
+                nav_services:
+                    "الخدمات والأسعار",
+
+                nav_contact:
+                    "تواصل معنا",
+
+                btn_book_now:
+                    "احجز موعدك الآن",
+
+                btn_whatsapp:
+                    "واتساب",
+
+                btn_view_pricing:
+                    "عرض قائمة الأسعار",
+
+                hero_title:
+                    "ستايلك يبدأ من DUE FRATELLI",
+
+                hero_subtitle:
+                    "حلاقة رجالي باحتراف في قلب بيروجيا، ستايل يليق بيك، وتجربة مختلفة من أول دقيقة.",
+
+                about_title:
+                    "من نحن",
+
+                about_desc:
+                    "مرحباً بكم في DUE FRATELLI، وجهتكم الأولى في بيروجيا لكل من يبحث عن الأناقة والاهتمام بأدق التفاصيل والاحترافية. ندمج بين فن الحلاقة الكلاسيكي وأحدث صيحات التصفيف الحديثة.",
+
+                about_f1_title:
+                    "خبرة ودقة",
+
+                about_f1_desc:
+                    "قص شعر وتحديد ذقن بمقاييس دقيقة تناسب مظهرك وستايلك الخاص.",
+
+                about_f2_title:
+                    "عناية بالبشرة",
+
+                about_f2_desc:
+                    "جلسات تنظيف وجه، بخار، وماسكات مرطبة لأعلى درجات الانتعاش.",
+
+                about_f3_title:
+                    "أجواء مريحة",
+
+                about_f3_desc:
+                    "بيئة احترافية ومريحة نضمن فيها تقديم أفضل تجربة لكل زبون.",
+
+                contact_title:
+                    "تفضل بزيارتنا",
+
+                contact_hours:
+                    "مفتوح يومياً: من 9:00 صباحاً إلى 9:00 مساءً",
+
+                btn_open_maps:
+                    "فتح الموقع على Google Maps",
+
+                btn_contact_whatsapp:
+                    "واتساب",
+
+                sticky_book:
+                    "حجز",
+
+                sticky_call:
+                    "اتصال",
+
+                sticky_map:
+                    "الموقع"
             }
+
         };
 
+
         function changeLanguage(lang) {
-            localStorage.setItem('selected_lang', lang);
-            document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    el.textContent = translations[lang][key];
-                }
-            });
+            localStorage.setItem(
+                'selected_lang',
+                lang
+            );
 
-            document.getElementById('lang-select').value = lang;
-            document.getElementById('lang-select-mobile').value = lang;
+            document.documentElement.lang =
+                lang;
+
+            document.documentElement.dir =
+                lang === 'ar'
+                    ? 'rtl'
+                    : 'ltr';
+
+
+            document
+                .querySelectorAll('[data-i18n]')
+                .forEach(el => {
+
+                    const key =
+                        el.getAttribute('data-i18n');
+
+                    if (
+                        translations[lang] &&
+                        translations[lang][key]
+                    ) {
+
+                        el.textContent =
+                            translations[lang][key];
+
+                    }
+
+                });
+
+
+            document.getElementById(
+                'lang-select'
+            ).value = lang;
+
+            document.getElementById(
+                'lang-select-mobile'
+            ).value = lang;
+
         }
+
 
         function toggleMobileMenu() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+
+            document
+                .getElementById('mobile-menu')
+                .classList.toggle('hidden');
+
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('selected_lang') || 'it';
-            changeLanguage(savedLang);
-        });
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            () => {
+
+                const savedLang =
+                    localStorage.getItem(
+                        'selected_lang'
+                    ) || 'it';
+
+                changeLanguage(
+                    savedLang
+                );
+
+            }
+        );
+
     </script>
+
 </body>
 </html>
-

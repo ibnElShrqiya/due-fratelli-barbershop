@@ -99,7 +99,7 @@
         </div>
       </div>
 
-      <!-- Controls & Table Header -->
+      <!-- Table Section -->
       <div class="glass-card rounded-2xl p-6 border border-slate-800 shadow-xl space-y-6">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -107,7 +107,6 @@
             <p class="text-slate-400 text-xs mt-1">Visualizza e gestisci tutti gli appuntamenti in tempo reale</p>
           </div>
           
-          <!-- Filters -->
           <div class="flex flex-wrap items-center gap-3">
             <div class="relative">
               <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
@@ -124,7 +123,6 @@
           </div>
         </div>
 
-        <!-- Table -->
         <div class="overflow-x-auto rounded-xl border border-slate-800">
           <table class="w-full text-left border-collapse">
             <thead>
@@ -149,19 +147,20 @@
     </main>
   </div>
 
-  <!-- Firebase Scripts -->
+  <!-- Firebase Integration with Real Keys -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, query } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // Replace with your project's Firebase Config if different
     const firebaseConfig = {
-      apiKey: "AIzaSyDummyKeyForYourProject",
+      apiKey: "AIzaSyDQdgwwqv4kLr4MW8NsiVKprjbp62cYRcg",
       authDomain: "due-fratelli-barbershop.firebaseapp.com",
+      databaseURL: "https://due-fratelli-barbershop-default-rtdb.firebaseio.com",
       projectId: "due-fratelli-barbershop",
-      storageBucket: "due-fratelli-barbershop.appspot.com",
-      messagingSenderId: "123456789",
-      appId: "1:123456789:web:abcdef"
+      storageBucket: "due-fratelli-barbershop.firebasestorage.app",
+      messagingSenderId: "696063399347",
+      appId: "1:696063399347:web:798bc2a264c3ca74a2e7c6",
+      measurementId: "G-PEX6ET3GS0"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -169,11 +168,10 @@
 
     let allBookings = [];
 
-    // Authentication
     window.handleLogin = (e) => {
       e.preventDefault();
       const pwd = document.getElementById('adminPassword').value;
-      if (pwd === '123456') { // Default Password: 123456
+      if (pwd === '123456') {
         sessionStorage.setItem('adminAuth', 'true');
         showDashboard();
       } else {
@@ -196,7 +194,6 @@
       showDashboard();
     }
 
-    // Realtime Listener
     function listenToBookings() {
       const q = query(collection(db, "bookings"));
       onSnapshot(q, (snapshot) => {
@@ -205,7 +202,6 @@
           allBookings.push({ id: doc.id, ...doc.data() });
         });
         
-        // Sort manually by date and time
         allBookings.sort((a, b) => (b.date + ' ' + b.time).localeCompare(a.date + ' ' + a.time));
         
         updateStats();

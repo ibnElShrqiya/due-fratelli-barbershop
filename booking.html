@@ -18,7 +18,7 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-  <!-- Header / Hero Section -->
+  <!-- Header Section -->
   <header class="relative border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
     <div class="max-w-4xl mx-auto px-4 py-6 text-center space-y-2">
       <div class="inline-flex items-center justify-center w-14 h-14 gold-gradient rounded-full text-slate-950 text-2xl font-bold shadow-lg shadow-amber-500/20 mb-1">
@@ -29,7 +29,7 @@
     </div>
   </header>
 
-  <!-- Main Booking Form Container -->
+  <!-- Main Booking Container -->
   <main class="max-w-xl mx-auto px-4 py-8 w-full flex-1">
     <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
       
@@ -96,9 +96,7 @@
         <!-- Time Slots Selection -->
         <div>
           <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Orario Disponibile</label>
-          <div id="slotsContainer" class="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
-            <!-- Slots dynamically loaded here -->
-          </div>
+          <div id="slotsContainer" class="grid grid-cols-3 sm:grid-cols-4 gap-2.5"></div>
           <p id="slotError" class="text-xs text-red-400 mt-2 hidden"><i class="fa-solid fa-triangle-exclamation"></i> Seleziona un orario per proseguire.</p>
         </div>
 
@@ -118,18 +116,20 @@
     <p>&copy; 2026 DUE FRATELLI Barbershop. Tutti i diritti riservati.</p>
   </footer>
 
-  <!-- Firebase Integration -->
+  <!-- Firebase Real Keys Integration -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyDummyKeyForYourProject",
+      apiKey: "AIzaSyDQdgwwqv4kLr4MW8NsiVKprjbp62cYRcg",
       authDomain: "due-fratelli-barbershop.firebaseapp.com",
+      databaseURL: "https://due-fratelli-barbershop-default-rtdb.firebaseio.com",
       projectId: "due-fratelli-barbershop",
-      storageBucket: "due-fratelli-barbershop.appspot.com",
-      messagingSenderId: "123456789",
-      appId: "1:123456789:web:abcdef"
+      storageBucket: "due-fratelli-barbershop.firebasestorage.app",
+      messagingSenderId: "696063399347",
+      appId: "1:696063399347:web:798bc2a264c3ca74a2e7c6",
+      measurementId: "G-PEX6ET3GS0"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -143,7 +143,6 @@
     let selectedTime = null;
     let bookedTimes = [];
 
-    // Set min date to today
     const dateInput = document.getElementById('bookingDate');
     const today = new Date().toISOString().split('T')[0];
     dateInput.min = today;

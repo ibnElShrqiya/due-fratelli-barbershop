@@ -1,122 +1,129 @@
 <!DOCTYPE html>
-<html lang="it" dir="ltr">
+<html lang="it" dir="ltr" id="htmlTag">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DUE FRATELLI - Prenota il tuo appuntamento</title>
+  <title>DUE FRATELLI - Barbershop Perugia</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0f172a; color: #f8fafc; }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cairo:wght@400;600;700&display=swap');
+    body { font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif; background-color: #0b0f17; color: #f8fafc; }
     .gold-gradient { background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); }
     .gold-text { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .glass-card { background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-    .time-slot.selected { background-color: #f59e0b; color: #0f172a; font-weight: bold; border-color: #f59e0b; }
-    .time-slot.booked { background-color: #1e293b; color: #64748b; text-decoration: line-through; cursor: not-allowed; opacity: 0.5; border-color: #334155; }
+    .glass-card { background: rgba(18, 24, 38, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(245, 158, 11, 0.15); }
+    .time-slot.selected { background-color: #f59e0b !important; color: #0b0f17 !important; font-weight: bold; border-color: #f59e0b !important; }
+    .time-slot.booked { background-color: #172131; color: #475569; text-decoration: line-through; cursor: not-allowed; opacity: 0.5; border-color: #1e293b; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-  <!-- Header Section -->
-  <header class="relative border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
-    <div class="max-w-4xl mx-auto px-4 py-6 text-center space-y-2">
-      <div class="inline-flex items-center justify-center w-14 h-14 gold-gradient rounded-full text-slate-950 text-2xl font-bold shadow-lg shadow-amber-500/20 mb-1">
-        <i class="fa-solid fa-scissors"></i>
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-40 border-b border-amber-500/10 bg-slate-950/90 backdrop-blur-md">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 gold-gradient rounded-xl flex items-center justify-center text-slate-950 font-bold shadow-md shadow-amber-500/20">
+          <i class="fa-solid fa-scissors"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-wider gold-text uppercase">DUE FRATELLI</h1>
+          <p class="text-[10px] text-slate-400 tracking-widest uppercase" data-it="Barbershop Perugia" data-ar="صالون الحلاقة ببيروجيا">Barbershop Perugia</p>
+        </div>
       </div>
-      <h1 class="text-3xl font-extrabold tracking-wider gold-text uppercase">DUE FRATELLI</h1>
-      <p class="text-slate-400 text-xs tracking-widest uppercase">Barbershop Perugia • Prenota Online</p>
+
+      <!-- Language Selector -->
+      <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-400 text-xs font-semibold hover:bg-amber-500/20 transition-all flex items-center gap-2">
+        <i class="fa-solid fa-globe"></i>
+        <span id="langBtnText">العربية</span>
+      </button>
     </div>
   </header>
 
-  <!-- Main Booking Container -->
+  <!-- Main Booking Form -->
   <main class="max-w-xl mx-auto px-4 py-8 w-full flex-1">
     <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
       
-      <div class="border-b border-slate-800 pb-4">
-        <h2 class="text-xl font-bold text-white flex items-center gap-2">
-          <i class="fa-regular fa-calendar-check text-amber-400"></i>
-          Prenota Appuntamento
-        </h2>
-        <p class="text-slate-400 text-xs mt-1">Scegli il servizio, la data e l'orario desiderato</p>
+      <div class="border-b border-slate-800 pb-4 text-center">
+        <h2 class="text-2xl font-bold text-white mb-1" data-it="Prenota il tuo appuntamento" data-ar="احجز موعدك الآن">Prenota il tuo appuntamento</h2>
+        <p class="text-slate-400 text-xs" data-it="Scegli il servizio, la data e l'orario desiderato" data-ar="اختر الخدمة، التاريخ، والوقت المناسب لك">Scegli il servizio, la data e l'orario desiderato</p>
       </div>
 
-      <!-- Alert Notification -->
-      <div id="alertBox" class="hidden p-4 rounded-xl text-sm font-medium border text-center transition-all"></div>
+      <!-- Alert Box -->
+      <div id="alertBox" class="hidden p-4 rounded-xl text-xs font-semibold border text-center transition-all"></div>
 
       <form id="bookingForm" onsubmit="handleBooking(event)" class="space-y-5">
         
         <!-- Name -->
         <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Nome Completo</label>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2" data-it="Nome Completo" data-ar="الاسم الكامل">Nome Completo</label>
           <div class="relative">
-            <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+            <i class="fa-solid fa-user absolute inset-y-0 flex items-center text-slate-500 text-sm px-4"></i>
             <input type="text" id="clientName" required placeholder="Es. Mario Rossi"
-              class="w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors text-sm">
+              class="w-full px-11 py-3 bg-slate-900/90 border border-slate-700/80 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors text-sm">
           </div>
         </div>
 
-        <!-- Phone Number -->
+        <!-- Phone -->
         <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Numero di Telefono</label>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2" data-it="Numero di Telefono" data-ar="رقم الهاتف">Numero di Telefono</label>
           <div class="relative">
-            <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+            <i class="fa-solid fa-phone absolute inset-y-0 flex items-center text-slate-500 text-sm px-4"></i>
             <input type="tel" id="clientPhone" required placeholder="Es. +39 312 345 6789"
-              class="w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors text-sm">
+              class="w-full px-11 py-3 bg-slate-900/90 border border-slate-700/80 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors text-sm font-mono">
           </div>
         </div>
 
-        <!-- Service Select -->
+        <!-- Service -->
         <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Seleziona Servizio</label>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2" data-it="Seleziona Servizio" data-ar="اختر الخدمة">Seleziona Servizio</label>
           <div class="relative">
-            <i class="fa-solid fa-list-check absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+            <i class="fa-solid fa-list-check absolute inset-y-0 flex items-center text-slate-500 text-sm px-4"></i>
             <select id="serviceSelect" required
-              class="w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors text-sm appearance-none cursor-pointer">
-              <option value="" disabled selected>Scegli un servizio...</option>
-              <option value="Taglio Capelli - €15">Taglio Capelli - €15</option>
-              <option value="Barba Express - €10">Barba Express - €10</option>
-              <option value="Taglio + Barba - €22">Taglio + Barba - €22</option>
-              <option value="Trattamento VIP - €30">Trattamento VIP Complete - €30</option>
+              class="w-full px-11 py-3 bg-slate-900/90 border border-slate-700/80 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors text-sm appearance-none cursor-pointer">
+              <option value="" disabled selected data-it="Scegli un servizio..." data-ar="اختر خدمة...">Scegli un servizio...</option>
+              <option value="Taglio Capelli - €15" data-it="Taglio Capelli - €15" data-ar="قص شعر - €15">Taglio Capelli - €15</option>
+              <option value="Barba Express - €10" data-it="Barba Express - €10" data-ar="حلاقة ذقن - €10">Barba Express - €10</option>
+              <option value="Taglio + Barba - €22" data-it="Taglio + Barba - €22" data-ar="قص شعر + ذقن - €22">Taglio + Barba - €22</option>
+              <option value="Trattamento VIP - €30" data-it="Trattamento VIP Complete - €30" data-ar="جلسة VIP كاملة - €30">Trattamento VIP Complete - €30</option>
             </select>
-            <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-xs"></i>
           </div>
         </div>
 
-        <!-- Date Selection -->
+        <!-- Date -->
         <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Data Appuntamento</label>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2" data-it="Data Appuntamento" data-ar="تاريخ الموعد">Data Appuntamento</label>
           <div class="relative">
-            <i class="fa-solid fa-calendar-day absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+            <i class="fa-solid fa-calendar-day absolute inset-y-0 flex items-center text-slate-500 text-sm px-4"></i>
             <input type="date" id="bookingDate" required onchange="fetchBookedSlots()"
-              class="w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors text-sm cursor-pointer">
+              class="w-full px-11 py-3 bg-slate-900/90 border border-slate-700/80 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors text-sm cursor-pointer">
           </div>
         </div>
 
-        <!-- Time Slots Selection -->
+        <!-- Time Slots -->
         <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Orario Disponibile</label>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2" data-it="Orario Disponibile" data-ar="الأوقات المتاحة">Orario Disponibile</label>
           <div id="slotsContainer" class="grid grid-cols-3 sm:grid-cols-4 gap-2.5"></div>
-          <p id="slotError" class="text-xs text-red-400 mt-2 hidden"><i class="fa-solid fa-triangle-exclamation"></i> Seleziona un orario per proseguire.</p>
+          <p id="slotError" class="text-xs text-red-400 mt-2 hidden" data-it="Seleziona un orario per proseguire." data-ar="يرجى اختيار وقت أولاً.">Seleziona un orario per proseguire.</p>
         </div>
 
         <!-- Submit Button -->
         <button type="submit" id="submitBtn"
           class="w-full py-4 gold-gradient text-slate-950 font-bold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-amber-500/20 text-sm tracking-wider uppercase flex items-center justify-center gap-2 mt-4">
-          <i class="fa-solid fa-check-circle"></i> Conferma Prenotazione
+          <i class="fa-solid fa-check-circle"></i>
+          <span id="btnText" data-it="Conferma Prenotazione" data-ar="تأكيد الحجز">Conferma Prenotazione</span>
         </button>
 
       </form>
     </div>
   </main>
 
-  <!-- Footer Info -->
-  <footer class="border-t border-slate-800 bg-slate-950/80 py-6 text-center text-xs text-slate-500 space-y-2">
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 bg-slate-950/90 py-6 text-center text-xs text-slate-500 space-y-1">
     <p><i class="fa-solid fa-location-dot text-amber-500"></i> Via Perugia, Italia • Telefono: +39 075 123456</p>
-    <p>&copy; 2026 DUE FRATELLI Barbershop. Tutti i diritti riservati.</p>
+    <p>&copy; 2026 DUE FRATELLI Barbershop. All rights reserved.</p>
   </footer>
 
-  <!-- Firebase Real Keys Integration -->
+  <!-- Firebase Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -135,11 +142,8 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const availableHours = [
-      "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
-      "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30"
-    ];
-
+    let currentLang = 'it';
+    const availableHours = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30"];
     let selectedTime = null;
     let bookedTimes = [];
 
@@ -148,14 +152,21 @@
     dateInput.min = today;
     dateInput.value = today;
 
-    window.addEventListener('DOMContentLoaded', () => {
-      fetchBookedSlots();
-    });
+    window.toggleLanguage = () => {
+      currentLang = currentLang === 'it' ? 'ar' : 'it';
+      document.getElementById('htmlTag').setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+      document.getElementById('langBtnText').innerText = currentLang === 'ar' ? 'Italiano' : 'العربية';
+
+      document.querySelectorAll('[data-it]').forEach(el => {
+        el.innerText = el.getAttribute(`data-${currentLang}`);
+      });
+    };
+
+    window.addEventListener('DOMContentLoaded', () => fetchBookedSlots());
 
     window.fetchBookedSlots = async () => {
       const selectedDate = dateInput.value;
       if(!selectedDate) return;
-
       selectedTime = null;
       document.getElementById('slotError').classList.add('hidden');
 
@@ -163,14 +174,11 @@
         const q = query(collection(db, "bookings"), where("date", "==", selectedDate));
         const querySnapshot = await getDocs(q);
         bookedTimes = [];
-        querySnapshot.forEach((doc) => {
-          if(doc.data().status !== 'Annullato') {
-            bookedTimes.push(doc.data().time);
-          }
+        querySnapshot.forEach(doc => {
+          if(doc.data().status !== 'Annullato') bookedTimes.push(doc.data().time);
         });
         renderTimeSlots();
       } catch (err) {
-        console.error("Error fetching slots:", err);
         renderTimeSlots();
       }
     };
@@ -181,9 +189,7 @@
         const isBooked = bookedTimes.includes(time);
         const isSelected = selectedTime === time;
         return `
-          <button type="button" 
-            onclick="selectSlot('${time}')" 
-            ${isBooked ? 'disabled' : ''}
+          <button type="button" onclick="selectSlot('${time}')" ${isBooked ? 'disabled' : ''}
             class="time-slot border border-slate-700 py-2.5 rounded-xl text-xs font-semibold transition-all ${isBooked ? 'booked' : 'bg-slate-900 text-slate-300 hover:border-amber-500'} ${isSelected ? 'selected' : ''}">
             ${time}
           </button>
@@ -199,7 +205,6 @@
 
     window.handleBooking = async (e) => {
       e.preventDefault();
-
       if(!selectedTime) {
         document.getElementById('slotError').classList.remove('hidden');
         return;
@@ -207,7 +212,7 @@
 
       const submitBtn = document.getElementById('submitBtn');
       submitBtn.disabled = true;
-      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Invio in corso...`;
+      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${currentLang === 'ar' ? 'جاري الإرسال...' : 'Invio in corso...'}`;
 
       const newBooking = {
         name: document.getElementById('clientName').value.trim(),
@@ -221,34 +226,26 @@
 
       try {
         await addDoc(collection(db, "bookings"), newBooking);
-        
-        showAlert("Prenotazione confermata con successo! Ti aspettiamo in salone.", "success");
+        const msg = currentLang === 'ar' ? 'تم تأكيد الحجز بنجاح! ننتظرك في الصالون.' : 'Prenotazione confermata con successo! Ti aspettiamo in salone.';
+        showAlert(msg, 'success');
         document.getElementById('bookingForm').reset();
         dateInput.value = today;
         selectedTime = null;
         fetchBookedSlots();
-
       } catch (error) {
-        console.error("Booking error:", error);
-        showAlert("Errore durante la prenotazione. Riprova più tardi.", "error");
+        const msg = currentLang === 'ar' ? 'حدث خطأ أثناء الحجز، يرجى المحاولة لاحقاً.' : 'Errore durante la prenotazione. Riprova più tardi.';
+        showAlert(msg, 'error');
       } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> Conferma Prenotazione`;
+        submitBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>${currentLang === 'ar' ? 'تأكيد الحجز' : 'Conferma Prenotazione'}</span>`;
       }
     };
 
     function showAlert(msg, type) {
       const box = document.getElementById('alertBox');
       box.classList.remove('hidden', 'bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/20', 'bg-red-500/10', 'text-red-400', 'border-red-500/20');
-      
-      if(type === 'success') {
-        box.classList.add('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/20');
-      } else {
-        box.classList.add('bg-red-500/10', 'text-red-400', 'border-red-500/20');
-      }
+      box.classList.add(type === 'success' ? 'bg-emerald-500/10' : 'bg-red-500/10', type === 'success' ? 'text-emerald-400' : 'text-red-400', type === 'success' ? 'border-emerald-500/20' : 'border-red-500/20');
       box.innerText = msg;
-      
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
 </body>

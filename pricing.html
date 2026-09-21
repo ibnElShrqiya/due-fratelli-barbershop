@@ -1,752 +1,256 @@
 <!DOCTYPE html>
-<html lang="it" dir="ltr" class="scroll-smooth">
-
+<html lang="it" dir="ltr">
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Servizi e Prezzi | DUE FRATELLI Perugia</title>
-
-    <meta
-        name="description"
-        content="Scopri i servizi e i prezzi di DUE FRATELLI Barbershop a Perugia: taglio capelli, barba, trattamenti viso e servizi con filo."
-    >
-
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <script src="https://unpkg.com/lucide@latest"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DUE FRATELLI - Prenota il tuo appuntamento</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0f172a; color: #f8fafc; }
+    .gold-gradient { background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); }
+    .gold-text { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .glass-card { background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .time-slot.selected { background-color: #f59e0b; color: #0f172a; font-weight: bold; border-color: #f59e0b; }
+    .time-slot.booked { background-color: #1e293b; color: #64748b; text-decoration: line-through; cursor: not-allowed; opacity: 0.5; border-color: #334155; }
+  </style>
 </head>
+<body class="min-h-screen flex flex-col justify-between">
 
+  <!-- Header / Hero Section -->
+  <header class="relative border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
+    <div class="max-w-4xl mx-auto px-4 py-6 text-center space-y-2">
+      <div class="inline-flex items-center justify-center w-14 h-14 gold-gradient rounded-full text-slate-950 text-2xl font-bold shadow-lg shadow-amber-500/20 mb-1">
+        <i class="fa-solid fa-scissors"></i>
+      </div>
+      <h1 class="text-3xl font-extrabold tracking-wider gold-text uppercase">DUE FRATELLI</h1>
+      <p class="text-slate-400 text-xs tracking-widest uppercase">Barbershop Perugia • Prenota Online</p>
+    </div>
+  </header>
 
-<body class="bg-neutral-950 text-neutral-100 font-sans">
+  <!-- Main Booking Form Container -->
+  <main class="max-w-xl mx-auto px-4 py-8 w-full flex-1">
+    <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+      
+      <div class="border-b border-slate-800 pb-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <i class="fa-regular fa-calendar-check text-amber-400"></i>
+          Prenota Appuntamento
+        </h2>
+        <p class="text-slate-400 text-xs mt-1">Scegli il servizio, la data e l'orario desiderato</p>
+      </div>
 
+      <!-- Alert Notification -->
+      <div id="alertBox" class="hidden p-4 rounded-xl text-sm font-medium border text-center transition-all"></div>
 
-    <!-- HEADER -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-amber-500/20">
-
-        <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-
-            <!-- LOGO -->
-            <a
-                href="index.html"
-                class="flex items-center gap-2">
-
-                <i
-                    data-lucide="scissors"
-                    class="w-7 h-7 text-amber-500">
-                </i>
-
-                <span class="text-xl font-black text-amber-400">
-                    DUE FRATELLI
-                </span>
-
-            </a>
-
-
-            <!-- RIGHT -->
-            <div class="flex items-center gap-3">
-
-
-                <!-- LANGUAGE -->
-                <select
-                    id="lang-select"
-                    onchange="changeLanguage(this.value)"
-                    class="bg-neutral-900 border border-amber-500/30 text-amber-400 text-xs font-bold rounded-lg px-2 py-1.5 focus:outline-none">
-
-                    <option value="it">
-                        🇮🇹 IT
-                    </option>
-
-                    <option value="en">
-                        🇬🇧 EN
-                    </option>
-
-                    <option value="ar">
-                        🇪🇬 AR
-                    </option>
-
-                </select>
-
-
-                <!-- BOOKING -->
-                <a
-                    href="booking.html"
-                    class="bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs px-4 py-2 rounded-full transition"
-                    data-i18n="btn_booking">
-
-                    Prenota
-
-                </a>
-
-            </div>
-
+      <form id="bookingForm" onsubmit="handleBooking(event)" class="space-y-5">
+        
+        <!-- Name -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Nome Completo</label>
+          <div class="relative">
+            <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+            <input type="text" id="clientName" required placeholder="Es. Mario Rossi"
+              class="w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors text-sm">
+          </div>
         </div>
 
-    </header>
-
-
-    <!-- MAIN -->
-    <main class="pt-32 pb-24">
-
-
-        <!-- HERO -->
-        <section class="max-w-6xl mx-auto px-4 text-center mb-14">
-
-            <span
-                class="inline-flex items-center gap-2 text-amber-400 text-sm font-bold uppercase tracking-widest">
-
-                <i
-                    data-lucide="sparkles"
-                    class="w-4 h-4">
-                </i>
-
-                DUE FRATELLI
-            </span>
-
-
-            <h1
-                class="mt-4 text-4xl sm:text-6xl font-black text-white"
-                data-i18n="title">
-
-                Servizi e Prezzi
-
-            </h1>
-
-
-            <p
-                class="mt-4 max-w-2xl mx-auto text-gray-400 text-base sm:text-lg"
-                data-i18n="subtitle">
-
-                Qualità, precisione e cura personale nel cuore di Perugia.
-
-            </p>
-
-        </section>
-
-
-        <!-- SERVICES -->
-        <section class="max-w-6xl mx-auto px-4">
-
-            <div
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-
-                <!-- FULL SERVICE -->
-                <article
-                    class="group bg-neutral-900 border border-amber-500/30 rounded-3xl p-7 shadow-xl hover:border-amber-400 hover:-translate-y-1 transition duration-300 relative overflow-hidden">
-
-                    <div
-                        class="absolute -right-10 -top-10 w-28 h-28 bg-amber-500/10 rounded-full">
-                    </div>
-
-
-                    <div class="flex items-start justify-between gap-4">
-
-                        <div>
-
-                            <div
-                                class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-5">
-
-                                <i
-                                    data-lucide="crown"
-                                    class="w-6 h-6 text-amber-400">
-                                </i>
-
-                            </div>
-
-
-                            <h2
-                                class="text-xl font-black text-white"
-                                data-i18n="service_full">
-
-                                Servizio Completo
-
-                            </h2>
-
-
-                            <p
-                                class="text-sm text-gray-400 mt-2"
-                                data-i18n="service_full_desc">
-
-                                Taglio capelli + barba + trattamento viso
-
-                            </p>
-
-                        </div>
-
-
-                        <div
-                            class="text-2xl font-black text-amber-400 whitespace-nowrap">
-
-                            €25
-
-                        </div>
-
-                    </div>
-
-                </article>
-
-
-                <!-- HAIRCUT -->
-                <article
-                    class="group bg-neutral-900 border border-neutral-800 rounded-3xl p-7 shadow-xl hover:border-amber-500/60 hover:-translate-y-1 transition duration-300">
-
-                    <div
-                        class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-5">
-
-                        <i
-                            data-lucide="scissors"
-                            class="w-6 h-6 text-amber-400">
-                        </i>
-
-                    </div>
-
-
-                    <div class="flex items-center justify-between gap-4">
-
-                        <h2
-                            class="text-xl font-black"
-                            data-i18n="service_haircut">
-
-                            Taglio Capelli
-
-                        </h2>
-
-
-                        <span
-                            class="text-2xl font-black text-amber-400">
-
-                            €10
-
-                        </span>
-
-                    </div>
-
-                </article>
-
-
-                <!-- BEARD -->
-                <article
-                    class="group bg-neutral-900 border border-neutral-800 rounded-3xl p-7 shadow-xl hover:border-amber-500/60 hover:-translate-y-1 transition duration-300">
-
-                    <div
-                        class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-5">
-
-                        <i
-                            data-lucide="brush"
-                            class="w-6 h-6 text-amber-400">
-                        </i>
-
-                    </div>
-
-
-                    <div class="flex items-center justify-between gap-4">
-
-                        <h2
-                            class="text-xl font-black"
-                            data-i18n="service_beard">
-
-                            Regolazione Barba
-
-                        </h2>
-
-
-                        <span
-                            class="text-2xl font-black text-amber-400">
-
-                            €5
-
-                        </span>
-
-                    </div>
-
-                </article>
-
-
-                <!-- FACE MASK -->
-                <article
-                    class="group bg-neutral-900 border border-neutral-800 rounded-3xl p-7 shadow-xl hover:border-amber-500/60 hover:-translate-y-1 transition duration-300">
-
-                    <div
-                        class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-5">
-
-                        <i
-                            data-lucide="sparkles"
-                            class="w-6 h-6 text-amber-400">
-                        </i>
-
-                    </div>
-
-
-                    <div class="flex items-center justify-between gap-4">
-
-                        <h2
-                            class="text-xl font-black"
-                            data-i18n="service_mask">
-
-                            Maschera Viso
-
-                        </h2>
-
-
-                        <span
-                            class="text-2xl font-black text-amber-400">
-
-                            €5
-
-                        </span>
-
-                    </div>
-
-                </article>
-
-
-                <!-- STEAM -->
-                <article
-                    class="group bg-neutral-900 border border-neutral-800 rounded-3xl p-7 shadow-xl hover:border-amber-500/60 hover:-translate-y-1 transition duration-300">
-
-                    <div
-                        class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-5">
-
-                        <i
-                            data-lucide="cloud"
-                            class="w-6 h-6 text-amber-400">
-                        </i>
-
-                    </div>
-
-
-                    <div class="flex items-center justify-between gap-4">
-
-                        <h2
-                            class="text-xl font-black"
-                            data-i18n="service_steam">
-
-                            Vapore Viso
-
-                        </h2>
-
-
-                        <span
-                            class="text-2xl font-black text-amber-400">
-
-                            €5
-
-                        </span>
-
-                    </div>
-
-                </article>
-
-
-                <!-- EYEBROWS -->
-                <article
-                    class="group bg-neutral-900 border border-neutral-800 rounded-3xl p-7 shadow-xl hover:border-amber-500/60 hover:-translate-y-1 transition duration-300">
-
-                    <div
-                        class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-5">
-
-                        <i
-                            data-lucide="eye"
-                            class="w-6 h-6 text-amber-400">
-                        </i>
-
-                    </div>
-
-
-                    <div class="flex items-center justify-between gap-4">
-
-                        <h2
-                            class="text-xl font-black"
-                            data-i18n="service_brows">
-
-                            Sopracciglia con Filo
-
-                        </h2>
-
-
-                        <span
-                            class="text-2xl font-black text-amber-400">
-
-                            €5
-
-                        </span>
-
-                    </div>
-
-
-                    <p
-                        class="mt-3 text-xs text-gray-500"
-                        data-i18n="women">
-
-                        Servizio donna
-
-                    </p>
-
-                </article>
-
-
-                <!-- FULL FACE THREADING -->
-                <article
-                    class="group bg-neutral-900 border border-neutral-800 rounded-3xl p-7 shadow-xl hover:border-amber-500/60 hover:-translate-y-1 transition duration-300 sm:col-span-2 lg:col-span-3">
-
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
-
-
-                        <div class="flex items-center gap-4">
-
-                            <div
-                                class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
-
-                                <i
-                                    data-lucide="circle-user-round"
-                                    class="w-6 h-6 text-amber-400">
-                                </i>
-
-                            </div>
-
-
-                            <div>
-
-                                <h2
-                                    class="text-xl font-black"
-                                    data-i18n="service_face">
-
-                                    Viso Completo con Filo
-
-                                </h2>
-
-
-                                <p
-                                    class="text-xs text-gray-500 mt-1"
-                                    data-i18n="women">
-
-                                    Servizio donna
-
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-                        <span
-                            class="text-3xl font-black text-amber-400">
-
-                            €10
-
-                        </span>
-
-                    </div>
-
-                </article>
-
-
-            </div>
-
-        </section>
-
-
-        <!-- CTA -->
-        <section class="max-w-4xl mx-auto px-4 mt-16">
-
-            <div
-                class="bg-gradient-to-br from-amber-500/10 to-neutral-900 border border-amber-500/20 rounded-3xl p-8 sm:p-10 text-center">
-
-
-                <i
-                    data-lucide="calendar-check"
-                    class="w-10 h-10 text-amber-400 mx-auto mb-4">
-                </i>
-
-
-                <h2
-                    class="text-2xl sm:text-3xl font-black"
-                    data-i18n="cta_title">
-
-                    Pronto per il tuo nuovo look?
-
-                </h2>
-
-
-                <p
-                    class="text-gray-400 mt-3"
-                    data-i18n="cta_text">
-
-                    Scegli il servizio che preferisci e prenota il tuo appuntamento.
-
-                </p>
-
-
-                <a
-                    href="booking.html"
-                    class="inline-flex items-center justify-center gap-2 mt-7 bg-amber-500 hover:bg-amber-400 text-black font-black px-7 py-3.5 rounded-full transition">
-
-                    <i
-                        data-lucide="calendar"
-                        class="w-5 h-5">
-                    </i>
-
-                    <span data-i18n="btn_booking">
-                        Prenota Ora
-                    </span>
-
-                </a>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- FOOTER -->
-    <footer
-        class="border-t border-neutral-800 py-8 text-center text-gray-500 text-sm">
-
-        <p>
-            © 2026 DUE FRATELLI Barbershop — Perugia, Italia
-        </p>
-
-    </footer>
-
-
-    <!-- JAVASCRIPT -->
-    <script>
-
-        /* ================================
-           TRANSLATIONS
-        ================================= */
-
-        const translations = {
-
-            it: {
-
-                title:
-                    "Servizi e Prezzi",
-
-                subtitle:
-                    "Qualità, precisione e cura personale nel cuore di Perugia.",
-
-                btn_booking:
-                    "Prenota Ora",
-
-                service_full:
-                    "Servizio Completo",
-
-                service_full_desc:
-                    "Taglio capelli + barba + trattamento viso",
-
-                service_haircut:
-                    "Taglio Capelli",
-
-                service_beard:
-                    "Regolazione Barba",
-
-                service_mask:
-                    "Maschera Viso",
-
-                service_steam:
-                    "Vapore Viso",
-
-                service_brows:
-                    "Sopracciglia con Filo",
-
-                service_face:
-                    "Viso Completo con Filo",
-
-                women:
-                    "Servizio donna",
-
-                cta_title:
-                    "Pronto per il tuo nuovo look?",
-
-                cta_text:
-                    "Scegli il servizio che preferisci e prenota il tuo appuntamento."
-
-            },
-
-
-            en: {
-
-                title:
-                    "Services & Prices",
-
-                subtitle:
-                    "Quality, precision and personal care in the heart of Perugia.",
-
-                btn_booking:
-                    "Book Now",
-
-                service_full:
-                    "Full Service",
-
-                service_full_desc:
-                    "Haircut + beard + facial treatment",
-
-                service_haircut:
-                    "Haircut",
-
-                service_beard:
-                    "Beard Trim",
-
-                service_mask:
-                    "Face Mask",
-
-                service_steam:
-                    "Facial Steam",
-
-                service_brows:
-                    "Eyebrows Threading",
-
-                service_face:
-                    "Full Face Threading",
-
-                women:
-                    "Women service",
-
-                cta_title:
-                    "Ready for your new look?",
-
-                cta_text:
-                    "Choose your preferred service and book your appointment."
-
-            },
-
-
-            ar: {
-
-                title:
-                    "الخدمات والأسعار",
-
-                subtitle:
-                    "جودة ودقة وعناية شخصية في قلب مدينة بيروجيا.",
-
-                btn_booking:
-                    "احجز الآن",
-
-                service_full:
-                    "الخدمة الكاملة",
-
-                service_full_desc:
-                    "قص شعر + تهذيب ذقن + عناية بالوجه",
-
-                service_haircut:
-                    "قص شعر",
-
-                service_beard:
-                    "تهذيب ذقن",
-
-                service_mask:
-                    "ماسك وجه",
-
-                service_steam:
-                    "بخار وجه",
-
-                service_brows:
-                    "حواجب بالخيط",
-
-                service_face:
-                    "الوجه كامل بالخيط",
-
-                women:
-                    "خدمة للسيدات",
-
-                cta_title:
-                    "جاهز لإطلالتك الجديدة؟",
-
-                cta_text:
-                    "اختر الخدمة التي تناسبك واحجز موعدك الآن."
-
-            }
-
-        };
-
-
-        /* ================================
-           LANGUAGE
-        ================================= */
-
-        function changeLanguage(lang) {
-
-            localStorage.setItem(
-                "selected_lang",
-                lang
-            );
-
-
-            document.documentElement.lang =
-                lang;
-
-
-            document.documentElement.dir =
-                lang === "ar"
-                    ? "rtl"
-                    : "ltr";
-
-
-            document
-                .querySelectorAll("[data-i18n]")
-                .forEach(element => {
-
-                    const key =
-                        element.getAttribute(
-                            "data-i18n"
-                        );
-
-
-                    if (
-                        translations[lang] &&
-                        translations[lang][key]
-                    ) {
-
-                        element.textContent =
-                            translations[lang][key];
-
-                    }
-
-                });
-
-
-            document.getElementById(
-                "lang-select"
-            ).value = lang;
-
-
-            lucide.createIcons();
-
-        }
-
-
-        /* ================================
-           START
-        ================================= */
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            () => {
-
-                const savedLang =
-                    localStorage.getItem(
-                        "selected_lang"
-                    ) || "it";
-
-
-                changeLanguage(
-                    savedLang
-                );
-
-
-                lucide.createIcons();
-
-            }
-        );
-
-    </script>
-
+        <!-- Phone Number -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Numero di Telefono</label>
+          <div class="relative">
+            <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+            <input type="tel" id="clientPhone" required placeholder="Es. +39 312 345 6789"
+              class="w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors text-sm">
+          </div>
+        </div>
+
+        <!-- Service Select -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Seleziona Servizio</label>
+          <div class="relative">
+            <i class="fa-solid fa-list-check absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+            <select id="serviceSelect" required
+              class="w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors text-sm appearance-none cursor-pointer">
+              <option value="" disabled selected>Scegli un servizio...</option>
+              <option value="Taglio Capelli - €15">Taglio Capelli - €15</option>
+              <option value="Barba Express - €10">Barba Express - €10</option>
+              <option value="Taglio + Barba - €22">Taglio + Barba - €22</option>
+              <option value="Trattamento VIP - €30">Trattamento VIP Complete - €30</option>
+            </select>
+            <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-xs"></i>
+          </div>
+        </div>
+
+        <!-- Date Selection -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Data Appuntamento</label>
+          <div class="relative">
+            <i class="fa-solid fa-calendar-day absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+            <input type="date" id="bookingDate" required onchange="fetchBookedSlots()"
+              class="w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors text-sm cursor-pointer">
+          </div>
+        </div>
+
+        <!-- Time Slots Selection -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Orario Disponibile</label>
+          <div id="slotsContainer" class="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
+            <!-- Slots dynamically loaded here -->
+          </div>
+          <p id="slotError" class="text-xs text-red-400 mt-2 hidden"><i class="fa-solid fa-triangle-exclamation"></i> Seleziona un orario per proseguire.</p>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="submitBtn"
+          class="w-full py-4 gold-gradient text-slate-950 font-bold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-amber-500/20 text-sm tracking-wider uppercase flex items-center justify-center gap-2 mt-4">
+          <i class="fa-solid fa-check-circle"></i> Conferma Prenotazione
+        </button>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer Info -->
+  <footer class="border-t border-slate-800 bg-slate-950/80 py-6 text-center text-xs text-slate-500 space-y-2">
+    <p><i class="fa-solid fa-location-dot text-amber-500"></i> Via Perugia, Italia • Telefono: +39 075 123456</p>
+    <p>&copy; 2026 DUE FRATELLI Barbershop. Tutti i diritti riservati.</p>
+  </footer>
+
+  <!-- Firebase Integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDummyKeyForYourProject",
+      authDomain: "due-fratelli-barbershop.firebaseapp.com",
+      projectId: "due-fratelli-barbershop",
+      storageBucket: "due-fratelli-barbershop.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "1:123456789:web:abcdef"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const availableHours = [
+      "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
+      "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30"
+    ];
+
+    let selectedTime = null;
+    let bookedTimes = [];
+
+    // Set min date to today
+    const dateInput = document.getElementById('bookingDate');
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.min = today;
+    dateInput.value = today;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchBookedSlots();
+    });
+
+    window.fetchBookedSlots = async () => {
+      const selectedDate = dateInput.value;
+      if(!selectedDate) return;
+
+      selectedTime = null;
+      document.getElementById('slotError').classList.add('hidden');
+
+      try {
+        const q = query(collection(db, "bookings"), where("date", "==", selectedDate));
+        const querySnapshot = await getDocs(q);
+        bookedTimes = [];
+        querySnapshot.forEach((doc) => {
+          if(doc.data().status !== 'Annullato') {
+            bookedTimes.push(doc.data().time);
+          }
+        });
+        renderTimeSlots();
+      } catch (err) {
+        console.error("Error fetching slots:", err);
+        renderTimeSlots();
+      }
+    };
+
+    function renderTimeSlots() {
+      const container = document.getElementById('slotsContainer');
+      container.innerHTML = availableHours.map(time => {
+        const isBooked = bookedTimes.includes(time);
+        const isSelected = selectedTime === time;
+        return `
+          <button type="button" 
+            onclick="selectSlot('${time}')" 
+            ${isBooked ? 'disabled' : ''}
+            class="time-slot border border-slate-700 py-2.5 rounded-xl text-xs font-semibold transition-all ${isBooked ? 'booked' : 'bg-slate-900 text-slate-300 hover:border-amber-500'} ${isSelected ? 'selected' : ''}">
+            ${time}
+          </button>
+        `;
+      }).join('');
+    }
+
+    window.selectSlot = (time) => {
+      selectedTime = time;
+      document.getElementById('slotError').classList.add('hidden');
+      renderTimeSlots();
+    };
+
+    window.handleBooking = async (e) => {
+      e.preventDefault();
+
+      if(!selectedTime) {
+        document.getElementById('slotError').classList.remove('hidden');
+        return;
+      }
+
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Invio in corso...`;
+
+      const newBooking = {
+        name: document.getElementById('clientName').value.trim(),
+        phone: document.getElementById('clientPhone').value.trim(),
+        service: document.getElementById('serviceSelect').value,
+        date: document.getElementById('bookingDate').value,
+        time: selectedTime,
+        status: "Confermato",
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        await addDoc(collection(db, "bookings"), newBooking);
+        
+        showAlert("Prenotazione confermata con successo! Ti aspettiamo in salone.", "success");
+        document.getElementById('bookingForm').reset();
+        dateInput.value = today;
+        selectedTime = null;
+        fetchBookedSlots();
+
+      } catch (error) {
+        console.error("Booking error:", error);
+        showAlert("Errore durante la prenotazione. Riprova più tardi.", "error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> Conferma Prenotazione`;
+      }
+    };
+
+    function showAlert(msg, type) {
+      const box = document.getElementById('alertBox');
+      box.classList.remove('hidden', 'bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/20', 'bg-red-500/10', 'text-red-400', 'border-red-500/20');
+      
+      if(type === 'success') {
+        box.classList.add('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/20');
+      } else {
+        box.classList.add('bg-red-500/10', 'text-red-400', 'border-red-500/20');
+      }
+      box.innerText = msg;
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
 </body>
-
 </html>

@@ -1,117 +1,313 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pannello Admin - DUE FRATELLI</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #121212; color: #fff; margin: 0; padding: 20px; direction: ltr; }
-        .admin-container { max-width: 800px; margin: 0 auto; background: #1e1e1e; padding: 25px; border-radius: 12px; }
-        h2 { color: #d4af37; text-align: center; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #333; }
-        th { background: #2a2a2a; color: #d4af37; }
-        .btn-delete { background: #ff4d4d; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
-        .filter-group { margin-bottom: 20px; }
-        input[type="date"] { padding: 8px; border-radius: 4px; border: 1px solid #444; background: #2a2a2a; color: #fff; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DUE FRATELLI - Panel Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0f172a; color: #f8fafc; }
+    .gold-gradient { background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); }
+    .gold-text { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+  </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
 
-<div class="admin-container">
-    <h2>Pannello Gestione Prenotazioni</h2>
-    
-    <div class="filter-group">
-        <label for="filterDate">Filtra per data: </label>
-        <input type="date" id="filterDate">
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-4">
+    <div class="glass-card w-full max-w-md rounded-2xl p-8 border border-slate-700/50 shadow-2xl text-center">
+      <div class="w-16 h-16 gold-gradient rounded-full flex items-center justify-center mx-auto mb-4 text-slate-950 text-2xl font-bold shadow-lg shadow-amber-500/20">
+        <i class="fa-solid fa-scissors"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-white mb-2">DUE FRATELLI</h2>
+      <p class="text-slate-400 text-sm mb-6">Inserisci la password per accedere al Pannello</p>
+      
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="mb-4">
+          <input type="password" id="adminPassword" placeholder="Password Admin" required
+            class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors text-center text-lg tracking-widest">
+        </div>
+        <p id="loginError" class="text-red-400 text-xs mb-4 hidden">Password errata! Riprova.</p>
+        <button type="submit" class="w-full py-3 gold-gradient text-slate-950 font-bold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-amber-500/20">
+          Accedi al Dashboard
+        </button>
+      </form>
     </div>
+  </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Data</th>
-                <th>Ora</th>
-                <th>Cliente</th>
-                <th>Telefono</th>
-                <th>Servizio</th>
-                <th>Azione</th>
-            </tr>
-        </thead>
-        <tbody id="bookingsTable">
-            <tr><td colspan="6">Caricamento prenotazioni...</td></tr>
-        </tbody>
-    </table>
-</div>
+  <!-- Dashboard Container -->
+  <div id="dashboard" class="hidden flex-1 flex flex-col">
+    <!-- Top Navigation -->
+    <header class="glass-card border-b border-slate-800 sticky top-0 z-30">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3 space-x-reverse">
+          <span class="text-xl font-bold tracking-wider gold-text">DUE FRATELLI</span>
+          <span class="bg-amber-500/10 text-amber-400 text-xs px-2.5 py-1 rounded-full font-medium border border-amber-500/20">Admin Panel</span>
+        </div>
+        <button onclick="logout()" class="text-slate-400 hover:text-red-400 text-sm font-medium transition-colors flex items-center gap-2">
+          <i class="fa-solid fa-right-from-bracket"></i> Esci
+        </button>
+      </div>
+    </header>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, getDocs, deleteDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+      
+      <!-- Analytics Stats Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-l-4 border-amber-500">
+          <div>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Totale Prenotazioni</p>
+            <h3 id="statTotal" class="text-2xl font-bold text-white mt-1">0</h3>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 text-xl">
+            <i class="fa-solid fa-calendar-check"></i>
+          </div>
+        </div>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDQdgwwqv4kLr4MW8NsiVKprjbp62cYRcg",
-    authDomain: "due-fratelli-barbershop.firebaseapp.com",
-    projectId: "due-fratelli-barbershop",
-    storageBucket: "due-fratelli-barbershop.firebasestorage.app",
-    messagingSenderId: "696063399347",
-    appId: "1:696063399347:web:798bc2a264c3ca74a2e7c6"
-  };
+        <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-l-4 border-blue-500">
+          <div>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Oggi</p>
+            <h3 id="statToday" class="text-2xl font-bold text-white mt-1">0</h3>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 text-xl">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+        </div>
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+        <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-l-4 border-emerald-500">
+          <div>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Completati</p>
+            <h3 id="statCompleted" class="text-2xl font-bold text-white mt-1">0</h3>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-xl">
+            <i class="fa-solid fa-check-circle"></i>
+          </div>
+        </div>
 
-  const bookingsTable = document.getElementById('bookingsTable');
-  const filterDate = document.getElementById('filterDate');
+        <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-l-4 border-purple-500">
+          <div>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Stima Incasso</p>
+            <h3 id="statRevenue" class="text-2xl font-bold text-white mt-1">€0</h3>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-xl">
+            <i class="fa-solid fa-euro-sign"></i>
+          </div>
+        </div>
+      </div>
 
-  async function loadBookings(dateFilter = null) {
-      bookingsTable.innerHTML = '<tr><td colspan="6">Caricamento...</td></tr>';
-      try {
-          let q;
-          if (dateFilter) {
-              q = query(collection(db, "bookings"), where("date", "==", dateFilter));
-          } else {
-              q = query(collection(db, "bookings"));
-          }
+      <!-- Controls & Table Header -->
+      <div class="glass-card rounded-2xl p-6 border border-slate-800 shadow-xl space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-bold text-white">Gestione Prenotazioni</h2>
+            <p class="text-slate-400 text-xs mt-1">Visualizza e gestisci tutti gli appuntamenti in tempo reale</p>
+          </div>
+          
+          <!-- Filters -->
+          <div class="flex flex-wrap items-center gap-3">
+            <div class="relative">
+              <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+              <input type="text" id="searchInput" oninput="filterBookings()" placeholder="Cerca cliente o tel..." 
+                class="pl-9 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-amber-500 w-full sm:w-48">
+            </div>
+            
+            <input type="date" id="dateFilter" onchange="filterBookings()" 
+              class="px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-amber-500">
+            
+            <button onclick="resetFilters()" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm transition-colors" title="Azzera filtri">
+              <i class="fa-solid fa-rotate-left"></i>
+            </button>
+          </div>
+        </div>
 
-          const querySnapshot = await getDocs(q);
-          bookingsTable.innerHTML = '';
+        <!-- Table -->
+        <div class="overflow-x-auto rounded-xl border border-slate-800">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-900/80 text-slate-400 text-xs font-semibold uppercase tracking-wider border-b border-slate-800">
+                <th class="py-4 px-4">Cliente</th>
+                <th class="py-4 px-4">Telefono</th>
+                <th class="py-4 px-4">Servizio</th>
+                <th class="py-4 px-4">Data & Ora</th>
+                <th class="py-4 px-4">Stato</th>
+                <th class="py-4 px-4 text-right">Azioni</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsTable" class="divide-y divide-slate-800/60 text-sm text-slate-300">
+              <tr>
+                <td colspan="6" class="py-8 text-center text-slate-500">Caricamento prenotazioni...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-          if (querySnapshot.empty) {
-              bookingsTable.innerHTML = '<tr><td colspan="6">Nessuna prenotazione trovata.</td></tr>';
-              return;
-          }
+    </main>
+  </div>
 
-          querySnapshot.forEach((docSnapshot) => {
-              const data = docSnapshot.data();
-              const row = document.createElement('tr');
-              row.innerHTML = `
-                  <td>${data.date}</td>
-                  <td><strong>${data.time}</strong></td>
-                  <td>${data.name}</td>
-                  <td><a href="tel:${data.phone}" style="color:#d4af37;">${data.phone}</a></td>
-                  <td>${data.service}</td>
-                  <td><button class="btn-delete" data-id="${docSnapshot.id}">Elimina</button></td>
-              `;
-              bookingsTable.appendChild(row);
-          });
+  <!-- Firebase Scripts -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-          document.querySelectorAll('.btn-delete').forEach(btn => {
-              btn.addEventListener('click', async (e) => {
-                  if (confirm("Sei sicuro di voler eliminare questa prenotazione?")) {
-                      const docId = e.target.getAttribute('data-id');
-                      await deleteDoc(doc(db, "bookings", docId));
-                      loadBookings(filterDate.value);
-                  }
-              });
-          });
+    // Replace with your project's Firebase Config if different
+    const firebaseConfig = {
+      apiKey: "AIzaSyDummyKeyForYourProject",
+      authDomain: "due-fratelli-barbershop.firebaseapp.com",
+      projectId: "due-fratelli-barbershop",
+      storageBucket: "due-fratelli-barbershop.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "1:123456789:web:abcdef"
+    };
 
-      } catch (error) {
-          console.error("Errore: ", error);
-          bookingsTable.innerHTML = '<tr><td colspan="6">Errore nel caricamento dei dati.</td></tr>';
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let allBookings = [];
+
+    // Authentication
+    window.handleLogin = (e) => {
+      e.preventDefault();
+      const pwd = document.getElementById('adminPassword').value;
+      if (pwd === '123456') { // Default Password: 123456
+        sessionStorage.setItem('adminAuth', 'true');
+        showDashboard();
+      } else {
+        document.getElementById('loginError').classList.remove('hidden');
       }
-  }
+    };
 
-  filterDate.addEventListener('change', () => loadBookings(filterDate.value));
-  loadBookings();
-</script>
+    window.logout = () => {
+      sessionStorage.removeItem('adminAuth');
+      location.reload();
+    };
+
+    function showDashboard() {
+      document.getElementById('loginModal').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      listenToBookings();
+    }
+
+    if (sessionStorage.getItem('adminAuth') === 'true') {
+      showDashboard();
+    }
+
+    // Realtime Listener
+    function listenToBookings() {
+      const q = query(collection(db, "bookings"));
+      onSnapshot(q, (snapshot) => {
+        allBookings = [];
+        snapshot.forEach((doc) => {
+          allBookings.push({ id: doc.id, ...doc.data() });
+        });
+        
+        // Sort manually by date and time
+        allBookings.sort((a, b) => (b.date + ' ' + b.time).localeCompare(a.date + ' ' + a.time));
+        
+        updateStats();
+        renderBookings(allBookings);
+      });
+    }
+
+    function updateStats() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      
+      const total = allBookings.length;
+      const today = allBookings.filter(b => b.date === todayStr).length;
+      const completed = allBookings.filter(b => b.status === 'Completato').length;
+      
+      let revenue = 0;
+      allBookings.forEach(b => {
+        if(b.service && b.service.includes('€')) {
+          const price = parseInt(b.service.split('€')[1]) || 0;
+          revenue += price;
+        }
+      });
+
+      document.getElementById('statTotal').innerText = total;
+      document.getElementById('statToday').innerText = today;
+      document.getElementById('statCompleted').innerText = completed;
+      document.getElementById('statRevenue').innerText = `€${revenue}`;
+    }
+
+    window.renderBookings = (bookings) => {
+      const tbody = document.getElementById('bookingsTable');
+      if (bookings.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500">Nessuna prenotazione trovata.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = bookings.map(b => {
+        const statusClass = b.status === 'Completato' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 
+                            b.status === 'Annullato' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 
+                            'bg-amber-500/10 text-amber-400 border-amber-500/20';
+        
+        return `
+          <tr class="hover:bg-slate-800/40 transition-colors">
+            <td class="py-4 px-4 font-semibold text-white">${b.name || 'N/A'}</td>
+            <td class="py-4 px-4 font-mono text-amber-400">${b.phone || 'N/A'}</td>
+            <td class="py-4 px-4"><span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg text-xs border border-slate-700">${b.service || 'N/A'}</span></td>
+            <td class="py-4 px-4">
+              <div class="font-medium text-white">${b.date || ''}</div>
+              <div class="text-xs text-slate-400 font-mono"><i class="fa-regular fa-clock"></i> ${b.time || ''}</div>
+            </td>
+            <td class="py-4 px-4">
+              <select onchange="updateStatus('${b.id}', this.value)" class="text-xs font-medium px-2.5 py-1 rounded-full border ${statusClass} bg-slate-900 focus:outline-none cursor-pointer">
+                <option value="Confermato" ${b.status === 'Confermato' ? 'selected' : ''}>Confermato</option>
+                <option value="Completato" ${b.status === 'Completato' ? 'selected' : ''}>Completato</option>
+                <option value="Annullato" ${b.status === 'Annullato' ? 'selected' : ''}>Annullato</option>
+              </select>
+            </td>
+            <td class="py-4 px-4 text-right">
+              <button onclick="deleteBooking('${b.id}')" class="p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all" title="Elimina">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    };
+
+    window.filterBookings = () => {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const date = document.getElementById('dateFilter').value;
+
+      const filtered = allBookings.filter(b => {
+        const matchesSearch = (b.name && b.name.toLowerCase().includes(search)) || (b.phone && b.phone.includes(search));
+        const matchesDate = !date || b.date === date;
+        return matchesSearch && matchesDate;
+      });
+
+      renderBookings(filtered);
+    };
+
+    window.resetFilters = () => {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('dateFilter').value = '';
+      renderBookings(allBookings);
+    };
+
+    window.updateStatus = async (id, status) => {
+      try {
+        await updateDoc(doc(db, "bookings", id), { status });
+      } catch (err) {
+        alert("Errore durante l'aggiornamento dello stato.");
+      }
+    };
+
+    window.deleteBooking = async (id) => {
+      if (confirm("Sei sicuro di voler eliminare questa prenotazione?")) {
+        try {
+          await deleteDoc(doc(db, "bookings", id));
+        } catch (err) {
+          alert("Errore durante l'eliminazione.");
+        }
+      }
+    };
+  </script>
 </body>
 </html>

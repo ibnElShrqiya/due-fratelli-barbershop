@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="it" dir="ltr">
+<html lang="it" dir="ltr" id="htmlTag">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DUE FRATELLI - Panel Dashboard</title>
+  <title>DUE FRATELLI - Admin Panel</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0f172a; color: #f8fafc; }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cairo:wght@400;600;700&display=swap');
+    body { font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif; background-color: #0b0f17; color: #f8fafc; }
     .gold-gradient { background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); }
     .gold-text { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glass-card { background: rgba(18, 24, 38, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(245, 158, 11, 0.12); }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -23,16 +23,16 @@
         <i class="fa-solid fa-scissors"></i>
       </div>
       <h2 class="text-2xl font-bold text-white mb-2">DUE FRATELLI</h2>
-      <p class="text-slate-400 text-sm mb-6">Inserisci la password per accedere al Pannello</p>
+      <p class="text-slate-400 text-sm mb-6" data-it="Inserisci la password per accedere" data-ar="أدخل كلمة المرور للدخول للوحة التحكم">Inserisci la password per accedere</p>
       
       <form id="loginForm" onsubmit="handleLogin(event)">
         <div class="mb-4">
-          <input type="password" id="adminPassword" placeholder="Password Admin" required
+          <input type="password" id="adminPassword" placeholder="Password" required
             class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors text-center text-lg tracking-widest">
         </div>
-        <p id="loginError" class="text-red-400 text-xs mb-4 hidden">Password errata! Riprova.</p>
+        <p id="loginError" class="text-red-400 text-xs mb-4 hidden" data-it="Password errata! Riprova." data-ar="كلمة المرور خاطئة!">Password errata!</p>
         <button type="submit" class="w-full py-3 gold-gradient text-slate-950 font-bold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-amber-500/20">
-          Accedi al Dashboard
+          <span data-it="Accedi al Dashboard" data-ar="دخول لوحة التحكم">Accedi al Dashboard</span>
         </button>
       </form>
     </div>
@@ -40,86 +40,77 @@
 
   <!-- Dashboard Container -->
   <div id="dashboard" class="hidden flex-1 flex flex-col">
-    <!-- Top Navigation -->
+    <!-- Top Header -->
     <header class="glass-card border-b border-slate-800 sticky top-0 z-30">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-        <div class="flex items-center space-x-3 space-x-reverse">
+        <div class="flex items-center gap-3">
           <span class="text-xl font-bold tracking-wider gold-text">DUE FRATELLI</span>
           <span class="bg-amber-500/10 text-amber-400 text-xs px-2.5 py-1 rounded-full font-medium border border-amber-500/20">Admin Panel</span>
         </div>
-        <button onclick="logout()" class="text-slate-400 hover:text-red-400 text-sm font-medium transition-colors flex items-center gap-2">
-          <i class="fa-solid fa-right-from-bracket"></i> Esci
-        </button>
+        
+        <div class="flex items-center gap-3">
+          <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-400 text-xs font-semibold hover:bg-amber-500/20 transition-all flex items-center gap-2">
+            <i class="fa-solid fa-globe"></i>
+            <span id="langBtnText">العربية</span>
+          </button>
+          <button onclick="logout()" class="text-slate-400 hover:text-red-400 text-sm font-medium transition-colors flex items-center gap-2">
+            <i class="fa-solid fa-right-from-bracket"></i> <span data-it="Esci" data-ar="خروج">Esci</span>
+          </button>
+        </div>
       </div>
     </header>
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
       
-      <!-- Analytics Stats Cards -->
+      <!-- Stats Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-l-4 border-amber-500">
           <div>
-            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Totale Prenotazioni</p>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider" data-it="Totale Prenotazioni" data-ar="إجمالي الحجوزات">Totale Prenotazioni</p>
             <h3 id="statTotal" class="text-2xl font-bold text-white mt-1">0</h3>
           </div>
-          <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 text-xl">
-            <i class="fa-solid fa-calendar-check"></i>
-          </div>
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 text-xl"><i class="fa-solid fa-calendar-check"></i></div>
         </div>
 
         <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-l-4 border-blue-500">
           <div>
-            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Oggi</p>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider" data-it="Oggi" data-ar="حجوزات اليوم">Oggi</p>
             <h3 id="statToday" class="text-2xl font-bold text-white mt-1">0</h3>
           </div>
-          <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 text-xl">
-            <i class="fa-solid fa-clock"></i>
-          </div>
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 text-xl"><i class="fa-solid fa-clock"></i></div>
         </div>
 
         <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-l-4 border-emerald-500">
           <div>
-            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Completati</p>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider" data-it="Completati" data-ar="المكتملة">Completati</p>
             <h3 id="statCompleted" class="text-2xl font-bold text-white mt-1">0</h3>
           </div>
-          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-xl">
-            <i class="fa-solid fa-check-circle"></i>
-          </div>
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-xl"><i class="fa-solid fa-check-circle"></i></div>
         </div>
 
         <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-l-4 border-purple-500">
           <div>
-            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Stima Incasso</p>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider" data-it="Stima Incasso" data-ar="الدخل المتوقع">Stima Incasso</p>
             <h3 id="statRevenue" class="text-2xl font-bold text-white mt-1">€0</h3>
           </div>
-          <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-xl">
-            <i class="fa-solid fa-euro-sign"></i>
-          </div>
+          <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-xl"><i class="fa-solid fa-euro-sign"></i></div>
         </div>
       </div>
 
-      <!-- Table Section -->
+      <!-- Controls & Table -->
       <div class="glass-card rounded-2xl p-6 border border-slate-800 shadow-xl space-y-6">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 class="text-xl font-bold text-white">Gestione Prenotazioni</h2>
-            <p class="text-slate-400 text-xs mt-1">Visualizza e gestisci tutti gli appuntamenti in tempo reale</p>
+            <h2 class="text-xl font-bold text-white" data-it="Gestione Prenotazioni" data-ar="إدارة الحجوزات">Gestione Prenotazioni</h2>
+            <p class="text-slate-400 text-xs mt-1" data-it="Visualizza e gestisci tutti gli appuntamenti" data-ar="عرض وإدارة المواعيد بالوقت الحقيقي">Visualizza e gestisci tutti gli appuntamenti</p>
           </div>
           
           <div class="flex flex-wrap items-center gap-3">
-            <div class="relative">
-              <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
-              <input type="text" id="searchInput" oninput="filterBookings()" placeholder="Cerca cliente o tel..." 
-                class="pl-9 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-amber-500 w-full sm:w-48">
-            </div>
-            
+            <input type="text" id="searchInput" oninput="filterBookings()" placeholder="بحث..." 
+              class="px-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-amber-500 w-full sm:w-48">
             <input type="date" id="dateFilter" onchange="filterBookings()" 
               class="px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-amber-500">
-            
-            <button onclick="resetFilters()" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm transition-colors" title="Azzera filtri">
-              <i class="fa-solid fa-rotate-left"></i>
-            </button>
           </div>
         </div>
 
@@ -127,18 +118,16 @@
           <table class="w-full text-left border-collapse">
             <thead>
               <tr class="bg-slate-900/80 text-slate-400 text-xs font-semibold uppercase tracking-wider border-b border-slate-800">
-                <th class="py-4 px-4">Cliente</th>
-                <th class="py-4 px-4">Telefono</th>
-                <th class="py-4 px-4">Servizio</th>
-                <th class="py-4 px-4">Data & Ora</th>
-                <th class="py-4 px-4">Stato</th>
-                <th class="py-4 px-4 text-right">Azioni</th>
+                <th class="py-4 px-4" data-it="Cliente" data-ar="العميل">Cliente</th>
+                <th class="py-4 px-4" data-it="Telefono" data-ar="الهاتف">Telefono</th>
+                <th class="py-4 px-4" data-it="Servizio" data-ar="الخدمة">Servizio</th>
+                <th class="py-4 px-4" data-it="Data & Ora" data-ar="التاريخ والوقت">Data & Ora</th>
+                <th class="py-4 px-4" data-it="Stato" data-ar="الحالة">Stato</th>
+                <th class="py-4 px-4 text-right" data-it="Azioni" data-ar="إجراءات">Azioni</th>
               </tr>
             </thead>
             <tbody id="bookingsTable" class="divide-y divide-slate-800/60 text-sm text-slate-300">
-              <tr>
-                <td colspan="6" class="py-8 text-center text-slate-500">Caricamento prenotazioni...</td>
-              </tr>
+              <tr><td colspan="6" class="py-8 text-center text-slate-500">Caricamento...</td></tr>
             </tbody>
           </table>
         </div>
@@ -147,7 +136,7 @@
     </main>
   </div>
 
-  <!-- Firebase Integration with Real Keys -->
+  <!-- Firebase Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, query } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -166,12 +155,23 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    let currentLang = 'it';
     let allBookings = [];
+
+    window.toggleLanguage = () => {
+      currentLang = currentLang === 'it' ? 'ar' : 'it';
+      document.getElementById('htmlTag').setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+      document.getElementById('langBtnText').innerText = currentLang === 'ar' ? 'Italiano' : 'العربية';
+
+      document.querySelectorAll('[data-it]').forEach(el => {
+        el.innerText = el.getAttribute(`data-${currentLang}`);
+      });
+      renderBookings(allBookings);
+    };
 
     window.handleLogin = (e) => {
       e.preventDefault();
-      const pwd = document.getElementById('adminPassword').value;
-      if (pwd === '123456') {
+      if (document.getElementById('adminPassword').value === '123456') {
         sessionStorage.setItem('adminAuth', 'true');
         showDashboard();
       } else {
@@ -190,20 +190,13 @@
       listenToBookings();
     }
 
-    if (sessionStorage.getItem('adminAuth') === 'true') {
-      showDashboard();
-    }
+    if (sessionStorage.getItem('adminAuth') === 'true') showDashboard();
 
     function listenToBookings() {
-      const q = query(collection(db, "bookings"));
-      onSnapshot(q, (snapshot) => {
+      onSnapshot(query(collection(db, "bookings")), (snapshot) => {
         allBookings = [];
-        snapshot.forEach((doc) => {
-          allBookings.push({ id: doc.id, ...doc.data() });
-        });
-        
+        snapshot.forEach((doc) => allBookings.push({ id: doc.id, ...doc.data() }));
         allBookings.sort((a, b) => (b.date + ' ' + b.time).localeCompare(a.date + ' ' + a.time));
-        
         updateStats();
         renderBookings(allBookings);
       });
@@ -211,37 +204,27 @@
 
     function updateStats() {
       const todayStr = new Date().toISOString().split('T')[0];
-      
-      const total = allBookings.length;
-      const today = allBookings.filter(b => b.date === todayStr).length;
-      const completed = allBookings.filter(b => b.status === 'Completato').length;
+      document.getElementById('statTotal').innerText = allBookings.length;
+      document.getElementById('statToday').innerText = allBookings.filter(b => b.date === todayStr).length;
+      document.getElementById('statCompleted').innerText = allBookings.filter(b => b.status === 'Completato').length;
       
       let revenue = 0;
       allBookings.forEach(b => {
-        if(b.service && b.service.includes('€')) {
-          const price = parseInt(b.service.split('€')[1]) || 0;
-          revenue += price;
-        }
+        if(b.service && b.service.includes('€')) revenue += parseInt(b.service.split('€')[1]) || 0;
       });
-
-      document.getElementById('statTotal').innerText = total;
-      document.getElementById('statToday').innerText = today;
-      document.getElementById('statCompleted').innerText = completed;
       document.getElementById('statRevenue').innerText = `€${revenue}`;
     }
 
     window.renderBookings = (bookings) => {
       const tbody = document.getElementById('bookingsTable');
       if (bookings.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500">Nessuna prenotazione trovata.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500">${currentLang === 'ar' ? 'لا توجد حجوزات حتى الآن.' : 'Nessuna prenotazione trovata.'}</td></tr>`;
         return;
       }
 
       tbody.innerHTML = bookings.map(b => {
         const statusClass = b.status === 'Completato' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 
-                            b.status === 'Annullato' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 
-                            'bg-amber-500/10 text-amber-400 border-amber-500/20';
-        
+                            b.status === 'Annullato' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20';
         return `
           <tr class="hover:bg-slate-800/40 transition-colors">
             <td class="py-4 px-4 font-semibold text-white">${b.name || 'N/A'}</td>
@@ -249,19 +232,17 @@
             <td class="py-4 px-4"><span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg text-xs border border-slate-700">${b.service || 'N/A'}</span></td>
             <td class="py-4 px-4">
               <div class="font-medium text-white">${b.date || ''}</div>
-              <div class="text-xs text-slate-400 font-mono"><i class="fa-regular fa-clock"></i> ${b.time || ''}</div>
+              <div class="text-xs text-slate-400 font-mono">${b.time || ''}</div>
             </td>
             <td class="py-4 px-4">
-              <select onchange="updateStatus('${b.id}', this.value)" class="text-xs font-medium px-2.5 py-1 rounded-full border ${statusClass} bg-slate-900 focus:outline-none cursor-pointer">
-                <option value="Confermato" ${b.status === 'Confermato' ? 'selected' : ''}>Confermato</option>
-                <option value="Completato" ${b.status === 'Completato' ? 'selected' : ''}>Completato</option>
-                <option value="Annullato" ${b.status === 'Annullato' ? 'selected' : ''}>Annullato</option>
+              <select onchange="updateStatus('${b.id}', this.value)" class="text-xs font-medium px-2.5 py-1 rounded-full border ${statusClass} bg-slate-900 cursor-pointer">
+                <option value="Confermato" ${b.status === 'Confermato' ? 'selected' : ''}>${currentLang === 'ar' ? 'مؤكد' : 'Confermato'}</option>
+                <option value="Completato" ${b.status === 'Completato' ? 'selected' : ''}>${currentLang === 'ar' ? 'مكتمل' : 'Completato'}</option>
+                <option value="Annullato" ${b.status === 'Annullato' ? 'selected' : ''}>${currentLang === 'ar' ? 'ملغي' : 'Annullato'}</option>
               </select>
             </td>
             <td class="py-4 px-4 text-right">
-              <button onclick="deleteBooking('${b.id}')" class="p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all" title="Elimina">
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
+              <button onclick="deleteBooking('${b.id}')" class="p-2 text-slate-500 hover:text-red-400 rounded-lg transition-all"><i class="fa-solid fa-trash-can"></i></button>
             </td>
           </tr>
         `;
@@ -271,39 +252,11 @@
     window.filterBookings = () => {
       const search = document.getElementById('searchInput').value.toLowerCase();
       const date = document.getElementById('dateFilter').value;
-
-      const filtered = allBookings.filter(b => {
-        const matchesSearch = (b.name && b.name.toLowerCase().includes(search)) || (b.phone && b.phone.includes(search));
-        const matchesDate = !date || b.date === date;
-        return matchesSearch && matchesDate;
-      });
-
-      renderBookings(filtered);
+      renderBookings(allBookings.filter(b => ((b.name && b.name.toLowerCase().includes(search)) || (b.phone && b.phone.includes(search))) && (!date || b.date === date)));
     };
 
-    window.resetFilters = () => {
-      document.getElementById('searchInput').value = '';
-      document.getElementById('dateFilter').value = '';
-      renderBookings(allBookings);
-    };
-
-    window.updateStatus = async (id, status) => {
-      try {
-        await updateDoc(doc(db, "bookings", id), { status });
-      } catch (err) {
-        alert("Errore durante l'aggiornamento dello stato.");
-      }
-    };
-
-    window.deleteBooking = async (id) => {
-      if (confirm("Sei sicuro di voler eliminare questa prenotazione?")) {
-        try {
-          await deleteDoc(doc(db, "bookings", id));
-        } catch (err) {
-          alert("Errore durante l'eliminazione.");
-        }
-      }
-    };
+    window.updateStatus = async (id, status) => { await updateDoc(doc(db, "bookings", id), { status }); };
+    window.deleteBooking = async (id) => { if (confirm("Sei sicuro?")) await deleteDoc(doc(db, "bookings", id)); };
   </script>
 </body>
 </html>

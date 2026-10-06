@@ -49,6 +49,10 @@
         </div>
         
         <div class="flex items-center gap-3">
+          <button id="notificationPermissionBtn" onclick="requestAdminNotifications()" class="px-3 py-1.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-xs font-semibold hover:bg-emerald-500/20 transition-all flex items-center gap-2">
+            <i class="fa-solid fa-bell"></i>
+            <span id="notificationPermissionText" data-it="Attiva notifiche" data-ar="تفعيل إشعارات المتصفح">Attiva notifiche</span>
+          </button>
           <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-400 text-xs font-semibold hover:bg-amber-500/20 transition-all flex items-center gap-2">
             <i class="fa-solid fa-globe"></i>
             <span id="langBtnText">العربية</span>
@@ -59,6 +63,8 @@
         </div>
       </div>
     </header>
+
+    <div id="newBookingAlert" role="alert" aria-live="assertive" class="hidden fixed top-20 right-4 z-40 max-w-sm rounded-xl border border-emerald-500/30 bg-slate-900 px-5 py-4 text-sm text-white shadow-2xl shadow-black/40"></div>
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
@@ -157,6 +163,8 @@
 
     let currentLang = 'it';
     let allBookings = [];
+    let hasReceivedInitialSnapshot = false;
+    let bookingAlertTimeout = null;
 
     window.toggleLanguage = () => {
       currentLang = currentLang === 'it' ? 'ar' : 'it';
@@ -167,7 +175,55 @@
         el.innerText = el.getAttribute(`data-${currentLang}`);
       });
       renderBookings(allBookings);
+      updateNotificationPermissionLabel();
     };
+
+    function updateNotificationPermissionLabel() {
+      const label = document.getElementById('notificationPermissionText');
+      const button = document.getElementById('notificationPermissionBtn');
+      if (!('Notification' in window)) {
+        label.innerText = currentLang === 'ar' ? 'إشعارات داخل اللوحة فقط' : 'Avvisi solo nel pannello';
+        button.disabled = true;
+        button.classList.add('opacity-50', 'cursor-not-allowed');
+        return;
+      }
+      button.disabled = Notification.permission === 'granted';
+      button.classList.toggle('opacity-50', button.disabled);
+      button.classList.toggle('cursor-not-allowed', button.disabled);
+      if (Notification.permission === 'granted') {
+        label.innerText = currentLang === 'ar' ? 'إشعارات المتصفح مفعّلة' : 'Notifiche attive';
+      } else if (Notification.permission === 'denied') {
+        label.innerText = currentLang === 'ar' ? 'السماح محظور من المتصفح' : 'Notifiche bloccate';
+      } else {
+        label.innerText = currentLang === 'ar' ? 'تفعيل إشعارات المتصفح' : 'Attiva notifiche';
+      }
+    }
+
+    window.requestAdminNotifications = async () => {
+      if (!('Notification' in window)) {
+        updateNotificationPermissionLabel();
+        return;
+      }
+      if (Notification.permission === 'default') {
+        try { await Notification.requestPermission(); } catch (error) { console.error('Notification permission error:', error); }
+      }
+      updateNotificationPermissionLabel();
+    };
+
+    function notifyAdminOfNewBooking(booking) {
+      const alert = document.getElementById('newBookingAlert');
+      const title = currentLang === 'ar' ? 'حجز جديد!' : 'Nuova prenotazione!';
+      const details = `${booking.name || '—'} · ${booking.date || ''} ${booking.time || ''}`;
+      alert.innerText = `${title} ${details}`;
+      alert.classList.remove('hidden');
+      if (bookingAlertTimeout) clearTimeout(bookingAlertTimeout);
+      bookingAlertTimeout = setTimeout(() => alert.classList.add('hidden'), 8000);
+
+      if ('Notification' in window && Notification.permission === 'granted') {
+        const browserNotification = new Notification(title, { body: details, tag: `booking-${booking.id}` });
+        browserNotification.onclick = () => { window.focus(); browserNotification.close(); };
+      }
+    }
 
     window.handleLogin = (e) => {
       e.preventDefault();
@@ -194,6 +250,12 @@
 
     function listenToBookings() {
       onSnapshot(query(collection(db, "bookings")), (snapshot) => {
+        if (hasReceivedInitialSnapshot) {
+          snapshot.docChanges().filter(change => change.type === 'added').forEach(change => {
+            notifyAdminOfNewBooking({ id: change.doc.id, ...change.doc.data() });
+          });
+        }
+        hasReceivedInitialSnapshot = true;
         allBookings = [];
         snapshot.forEach((doc) => allBookings.push({ id: doc.id, ...doc.data() }));
         allBookings.sort((a, b) => (b.date + ' ' + b.time).localeCompare(a.date + ' ' + a.time));
@@ -201,6 +263,8 @@
         renderBookings(allBookings);
       });
     }
+
+    updateNotificationPermissionLabel();
 
     function updateStats() {
       const todayStr = new Date().toISOString().split('T')[0];

@@ -124,12 +124,14 @@
     import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyDummyKeyForYourProject",
+      apiKey: "AIzaSyDQdgwwqv4kLr4MW8NsiVKprjbp62cYRcg",
       authDomain: "due-fratelli-barbershop.firebaseapp.com",
       projectId: "due-fratelli-barbershop",
-      storageBucket: "due-fratelli-barbershop.appspot.com",
-      messagingSenderId: "123456789",
-      appId: "1:123456789:web:abcdef"
+      databaseURL: "https://due-fratelli-barbershop-default-rtdb.firebaseio.com",
+      storageBucket: "due-fratelli-barbershop.firebasestorage.app",
+      messagingSenderId: "696063399347",
+      appId: "1:696063399347:web:798bc2a264c3ca74a2e7c6",
+      measurementId: "G-PEX6ET3GS0"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -222,6 +224,16 @@
 
       try {
         await addDoc(collection(db, "bookings"), newBooking);
+        try {
+          await fetch("/api/notify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newBooking),
+            keepalive: true
+          });
+        } catch (notificationError) {
+          console.warn("Notification request failed:", notificationError);
+        }
         
         showAlert("Prenotazione confermata con successo! Ti aspettiamo in salone.", "success");
         document.getElementById('bookingForm').reset();

@@ -13,6 +13,8 @@
     .gold-text { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .glass-card { background: rgba(18, 24, 38, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(245, 158, 11, 0.12); }
   </style>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>window.OneSignalDeferred = window.OneSignalDeferred || [];</script>
 </head>
 <body class="min-h-screen flex flex-col">
 
@@ -27,6 +29,8 @@
       
       <form id="loginForm" onsubmit="handleLogin(event)">
         <div class="mb-4">
+          <input type="email" id="adminEmail" placeholder="Admin email" required
+            class="w-full px-4 py-3 mb-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors text-center text-sm">
           <input type="password" id="adminPassword" placeholder="Password" required
             class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors text-center text-lg tracking-widest">
         </div>
@@ -146,6 +150,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, query } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDQdgwwqv4kLr4MW8NsiVKprjbp62cYRcg",
@@ -160,105 +165,136 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
+    const ADMIN_UID = "UaeCgppTSwVNou3QuEGZdfDiOet1";
+    const ONESIGNAL_APP_ID = "71a26ce3-89a9-4e1d-be11-626d62fb72d1";
 
-    let currentLang = 'it';
+    let currentLang = "it";
     let allBookings = [];
     let hasReceivedInitialSnapshot = false;
     let bookingAlertTimeout = null;
+    let pushSetupComplete = false;
+    let oneSignalReady = false;
+
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    window.OneSignalDeferred.push(async function(OneSignal) {
+      try {
+        await OneSignal.init({
+          appId: ONESIGNAL_APP_ID,
+          serviceWorkerPath: "/OneSignalSDKWorker.js",
+          serviceWorkerUpdaterPath: "/OneSignalSDKUpdaterWorker.js",
+          notifyButton: { enable: false }
+        });
+        oneSignalReady = true;
+        if (auth.currentUser?.uid === ADMIN_UID) await OneSignal.login(ADMIN_UID);
+        updateNotificationPermissionLabel();
+      } catch (error) {
+        console.error("OneSignal initialization failed:", error);
+      }
+    });
+
+    function waitForOneSignal(timeout = 10000) {
+      return new Promise((resolve, reject) => {
+        const started = Date.now();
+        const timer = setInterval(() => {
+          if (oneSignalReady) { clearInterval(timer); resolve(); }
+          else if (Date.now() - started > timeout) { clearInterval(timer); reject(new Error("OneSignal initialization timeout")); }
+        }, 100);
+      });
+    }
 
     window.toggleLanguage = () => {
-      currentLang = currentLang === 'it' ? 'ar' : 'it';
-      document.getElementById('htmlTag').setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
-      document.getElementById('langBtnText').innerText = currentLang === 'ar' ? 'Italiano' : 'العربية';
-
-      document.querySelectorAll('[data-it]').forEach(el => {
-        el.innerText = el.getAttribute(`data-${currentLang}`);
-      });
+      currentLang = currentLang === "it" ? "ar" : "it";
+      document.getElementById("htmlTag").setAttribute("dir", currentLang === "ar" ? "rtl" : "ltr");
+      document.getElementById("langBtnText").innerText = currentLang === "ar" ? "Italiano" : "العربية";
+      document.querySelectorAll("[data-it]").forEach(el => { el.innerText = el.getAttribute(`data-${currentLang}`); });
       renderBookings(allBookings);
       updateNotificationPermissionLabel();
     };
 
     function updateNotificationPermissionLabel() {
-      const label = document.getElementById('notificationPermissionText');
-      const button = document.getElementById('notificationPermissionBtn');
-      if (!('Notification' in window)) {
-        label.innerText = currentLang === 'ar' ? 'إشعارات داخل اللوحة فقط' : 'Avvisi solo nel pannello';
+      const label = document.getElementById("notificationPermissionText");
+      const button = document.getElementById("notificationPermissionBtn");
+      if (!window.OneSignal) {
+        label.innerText = currentLang === "ar" ? "جاري تجهيز الإشعارات" : "Preparazione notifiche";
         button.disabled = true;
-        button.classList.add('opacity-50', 'cursor-not-allowed');
         return;
       }
-      button.disabled = Notification.permission === 'granted';
-      button.classList.toggle('opacity-50', button.disabled);
-      button.classList.toggle('cursor-not-allowed', button.disabled);
-      if (Notification.permission === 'granted') {
-        label.innerText = currentLang === 'ar' ? 'إشعارات المتصفح مفعّلة' : 'Notifiche attive';
-      } else if (Notification.permission === 'denied') {
-        label.innerText = currentLang === 'ar' ? 'السماح محظور من المتصفح' : 'Notifiche bloccate';
-      } else {
-        label.innerText = currentLang === 'ar' ? 'تفعيل إشعارات المتصفح' : 'Attiva notifiche';
-      }
+      button.disabled = pushSetupComplete;
+      button.classList.toggle("opacity-50", button.disabled);
+      button.classList.toggle("cursor-not-allowed", button.disabled);
+      label.innerText = pushSetupComplete
+        ? (currentLang === "ar" ? "الإشعارات مفعّلة" : "Notifiche attive")
+        : (currentLang === "ar" ? "تفعيل إشعارات الحجوزات" : "Attiva notifiche prenotazioni");
     }
 
     window.requestAdminNotifications = async () => {
-      if (!('Notification' in window)) {
+      try {
+        if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) throw new Error("Administrator account is not configured.");
+        await waitForOneSignal();
+        await window.OneSignal.login(ADMIN_UID);
+        await window.OneSignal.Notifications.requestPermission();
+        const permission = window.OneSignal.Notifications.permission;
+        if (!permission) throw new Error("Notification permission was not granted.");
+        pushSetupComplete = true;
         updateNotificationPermissionLabel();
-        return;
+        alert(currentLang === "ar" ? "تم تفعيل إشعارات الحجوزات الجديدة." : "Notifiche per le nuove prenotazioni attivate.");
+      } catch (error) {
+        console.error("OneSignal setup failed:", error);
+        alert(currentLang === "ar" ? "تعذر تفعيل الإشعارات. اسمح بإشعارات الموقع من المتصفح." : "Impossibile attivare le notifiche. Consenti le notifiche del sito nel browser.");
+        updateNotificationPermissionLabel();
       }
-      if (Notification.permission === 'default') {
-        try { await Notification.requestPermission(); } catch (error) { console.error('Notification permission error:', error); }
-      }
-      updateNotificationPermissionLabel();
     };
 
     function notifyAdminOfNewBooking(booking) {
-      const alert = document.getElementById('newBookingAlert');
-      const title = currentLang === 'ar' ? 'حجز جديد!' : 'Nuova prenotazione!';
-      const details = `${booking.name || '—'} · ${booking.date || ''} ${booking.time || ''}`;
+      const alert = document.getElementById("newBookingAlert");
+      const title = currentLang === "ar" ? "حجز جديد!" : "Nuova prenotazione!";
+      const details = `${booking.name || "—"} · ${booking.date || ""} ${booking.time || ""}`;
       alert.innerText = `${title} ${details}`;
-      alert.classList.remove('hidden');
+      alert.classList.remove("hidden");
       if (bookingAlertTimeout) clearTimeout(bookingAlertTimeout);
-      bookingAlertTimeout = setTimeout(() => alert.classList.add('hidden'), 8000);
-
-      if ('Notification' in window && Notification.permission === 'granted') {
-        const browserNotification = new Notification(title, { body: details, tag: `booking-${booking.id}` });
-        browserNotification.onclick = () => { window.focus(); browserNotification.close(); };
-      }
+      bookingAlertTimeout = setTimeout(() => alert.classList.add("hidden"), 8000);
     }
 
-    window.handleLogin = (e) => {
+    window.handleLogin = async (e) => {
       e.preventDefault();
-      if (document.getElementById('adminPassword').value === '123456') {
-        sessionStorage.setItem('adminAuth', 'true');
-        showDashboard();
-      } else {
-        document.getElementById('loginError').classList.remove('hidden');
+      try {
+        await signInWithEmailAndPassword(auth, document.getElementById("adminEmail").value.trim(), document.getElementById("adminPassword").value);
+        if (auth.currentUser.uid !== ADMIN_UID) {
+          await signOut(auth);
+          throw new Error("This account is not the configured administrator.");
+        }
+      } catch (error) {
+        console.error("Admin login failed:", error);
+        document.getElementById("loginError").classList.remove("hidden");
       }
     };
 
-    window.logout = () => {
-      sessionStorage.removeItem('adminAuth');
-      location.reload();
-    };
+    window.logout = () => { signOut(auth).then(() => location.reload()); };
 
     function showDashboard() {
-      document.getElementById('loginModal').classList.add('hidden');
-      document.getElementById('dashboard').classList.remove('hidden');
+      document.getElementById("loginModal").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+      waitForOneSignal().then(() => window.OneSignal.login(ADMIN_UID)).catch(() => {});
       listenToBookings();
     }
 
-    if (sessionStorage.getItem('adminAuth') === 'true') showDashboard();
+    onAuthStateChanged(auth, user => {
+      if (user && user.uid === ADMIN_UID) showDashboard();
+      else if (user) signOut(auth);
+    });
 
     function listenToBookings() {
       onSnapshot(query(collection(db, "bookings")), (snapshot) => {
         if (hasReceivedInitialSnapshot) {
-          snapshot.docChanges().filter(change => change.type === 'added').forEach(change => {
+          snapshot.docChanges().filter(change => change.type === "added").forEach(change => {
             notifyAdminOfNewBooking({ id: change.doc.id, ...change.doc.data() });
           });
         }
         hasReceivedInitialSnapshot = true;
         allBookings = [];
         snapshot.forEach((doc) => allBookings.push({ id: doc.id, ...doc.data() }));
-        allBookings.sort((a, b) => (b.date + ' ' + b.time).localeCompare(a.date + ' ' + a.time));
+        allBookings.sort((a, b) => (b.date + " " + b.time).localeCompare(a.date + " " + a.time));
         updateStats();
         renderBookings(allBookings);
       });
@@ -267,55 +303,41 @@
     updateNotificationPermissionLabel();
 
     function updateStats() {
-      const todayStr = new Date().toISOString().split('T')[0];
-      document.getElementById('statTotal').innerText = allBookings.length;
-      document.getElementById('statToday').innerText = allBookings.filter(b => b.date === todayStr).length;
-      document.getElementById('statCompleted').innerText = allBookings.filter(b => b.status === 'Completato').length;
-      
+      const todayStr = new Date().toISOString().split("T")[0];
+      document.getElementById("statTotal").innerText = allBookings.length;
+      document.getElementById("statToday").innerText = allBookings.filter(b => b.date === todayStr).length;
+      document.getElementById("statCompleted").innerText = allBookings.filter(b => b.status === "Completato").length;
       let revenue = 0;
-      allBookings.forEach(b => {
-        if(b.service && b.service.includes('€')) revenue += parseInt(b.service.split('€')[1]) || 0;
-      });
-      document.getElementById('statRevenue').innerText = `€${revenue}`;
+      allBookings.forEach(b => { if (b.service && b.service.includes("€")) revenue += parseInt(b.service.split("€")[1]) || 0; });
+      document.getElementById("statRevenue").innerText = `€${revenue}`;
     }
 
     window.renderBookings = (bookings) => {
-      const tbody = document.getElementById('bookingsTable');
+      const tbody = document.getElementById("bookingsTable");
       if (bookings.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500">${currentLang === 'ar' ? 'لا توجد حجوزات حتى الآن.' : 'Nessuna prenotazione trovata.'}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500">${currentLang === "ar" ? "لا توجد حجوزات حتى الآن." : "Nessuna prenotazione trovata."}</td></tr>`;
         return;
       }
-
       tbody.innerHTML = bookings.map(b => {
-        const statusClass = b.status === 'Completato' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 
-                            b.status === 'Annullato' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20';
-        return `
-          <tr class="hover:bg-slate-800/40 transition-colors">
-            <td class="py-4 px-4 font-semibold text-white">${b.name || 'N/A'}</td>
-            <td class="py-4 px-4 font-mono text-amber-400">${b.phone || 'N/A'}</td>
-            <td class="py-4 px-4"><span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg text-xs border border-slate-700">${b.service || 'N/A'}</span></td>
-            <td class="py-4 px-4">
-              <div class="font-medium text-white">${b.date || ''}</div>
-              <div class="text-xs text-slate-400 font-mono">${b.time || ''}</div>
-            </td>
-            <td class="py-4 px-4">
-              <select onchange="updateStatus('${b.id}', this.value)" class="text-xs font-medium px-2.5 py-1 rounded-full border ${statusClass} bg-slate-900 cursor-pointer">
-                <option value="Confermato" ${b.status === 'Confermato' ? 'selected' : ''}>${currentLang === 'ar' ? 'مؤكد' : 'Confermato'}</option>
-                <option value="Completato" ${b.status === 'Completato' ? 'selected' : ''}>${currentLang === 'ar' ? 'مكتمل' : 'Completato'}</option>
-                <option value="Annullato" ${b.status === 'Annullato' ? 'selected' : ''}>${currentLang === 'ar' ? 'ملغي' : 'Annullato'}</option>
-              </select>
-            </td>
-            <td class="py-4 px-4 text-right">
-              <button onclick="deleteBooking('${b.id}')" class="p-2 text-slate-500 hover:text-red-400 rounded-lg transition-all"><i class="fa-solid fa-trash-can"></i></button>
-            </td>
-          </tr>
-        `;
-      }).join('');
+        const statusClass = b.status === "Completato" ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" : b.status === "Annullato" ? "bg-red-500/10 text-red-400 border-red-500/20" : "bg-amber-500/10 text-amber-400 border-amber-500/20";
+        return `<tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-4 px-4 font-semibold text-white">${b.name || "N/A"}</td>
+          <td class="py-4 px-4 font-mono text-amber-400">${b.phone || "N/A"}</td>
+          <td class="py-4 px-4"><span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg text-xs border border-slate-700">${b.service || "N/A"}</span></td>
+          <td class="py-4 px-4"><div class="font-medium text-white">${b.date || ""}</div><div class="text-xs text-slate-400 font-mono">${b.time || ""}</div></td>
+          <td class="py-4 px-4"><select onchange="updateStatus('${b.id}', this.value)" class="text-xs font-medium px-2.5 py-1 rounded-full border ${statusClass} bg-slate-900 cursor-pointer">
+            <option value="Confermato" ${b.status === "Confermato" ? "selected" : ""}>${currentLang === "ar" ? "مؤكد" : "Confermato"}</option>
+            <option value="Completato" ${b.status === "Completato" ? "selected" : ""}>${currentLang === "ar" ? "مكتمل" : "Completato"}</option>
+            <option value="Annullato" ${b.status === "Annullato" ? "selected" : ""}>${currentLang === "ar" ? "ملغي" : "Annullato"}</option>
+          </select></td>
+          <td class="py-4 px-4 text-right"><button onclick="deleteBooking('${b.id}')" class="p-2 text-slate-500 hover:text-red-400 rounded-lg transition-all"><i class="fa-solid fa-trash-can"></i></button></td>
+        </tr>`;
+      }).join("");
     };
 
     window.filterBookings = () => {
-      const search = document.getElementById('searchInput').value.toLowerCase();
-      const date = document.getElementById('dateFilter').value;
+      const search = document.getElementById("searchInput").value.toLowerCase();
+      const date = document.getElementById("dateFilter").value;
       renderBookings(allBookings.filter(b => ((b.name && b.name.toLowerCase().includes(search)) || (b.phone && b.phone.includes(search))) && (!date || b.date === date)));
     };
 

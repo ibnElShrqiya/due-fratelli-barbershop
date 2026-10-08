@@ -229,6 +229,16 @@
 
       try {
         await addDoc(collection(db, "bookings"), newBooking);
+        try {
+          await fetch("/api/notify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newBooking),
+            keepalive: true
+          });
+        } catch (notificationError) {
+          console.warn("Notification request failed:", notificationError);
+        }
         const msg = currentLang === 'ar' ? 'تم تأكيد الحجز بنجاح! ننتظرك في الصالون.' : 'Prenotazione confermata con successo! Ti aspettiamo in salone.';
         showAlert(msg, 'success');
         document.getElementById('bookingForm').reset();

@@ -1,0 +1,61 @@
+/* DUE FRATELLI premium shared theme
+   Add <link rel="stylesheet" href="premium.css"> after Tailwind/font CSS on booking.html,
+   pricing.html and admin.html. Existing page-specific logic is not changed. */
+:root {
+  --df-bg: #0b0b0a;
+  --df-panel: #141411;
+  --df-gold: #d8b36a;
+  --df-gold-light: #f0d79e;
+}
+html { scroll-behavior: smooth; }
+body {
+  background-color: var(--df-bg) !important;
+  color: #f6f3ed !important;
+  font-family: "DM Sans", "Plus Jakarta Sans", "Cairo", sans-serif !important;
+}
+.gold-gradient {
+  background: linear-gradient(135deg, #f0d79e 0%, #bd9145 100%) !important;
+}
+.gold-text {
+  background: linear-gradient(135deg, #f0d79e 0%, #bd9145 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+.glass-card {
+  background: rgba(20, 20, 17, 0.9) !important;
+  backdrop-filter: blur(18px) !important;
+  border: 1px solid rgba(216, 179, 106, 0.2) !important;
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.25);
+}
+input, select, textarea {
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--df-gold) !important;
+  box-shadow: 0 0 0 3px rgba(216, 179, 106, 0.12);
+  outline: none;
+}
+button, a { transition: color 0.2s, background-color 0.2s, border-color 0.2s, transform 0.2s; }
+button:hover:not(:disabled) { filter: brightness(1.06); }
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--df-gold);
+  outline-offset: 3px;
+}
+::selection { background: var(--df-gold-light); color: #111; }
+.time-slot.selected {
+  background: var(--df-gold) !important;
+  color: #14120d !important;
+  border-color: var(--df-gold) !important;
+}
+.time-slot.booked {
+  background: #191916 !important;
+  color: #77736a !important;
+  border-color: #302d25 !important;
+}
+@media (max-width: 640px) {
+  .glass-card { border-radius: 1.25rem !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+}
